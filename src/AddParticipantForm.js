@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 const AddParticipantForm = ({ onParticipantAdded }) => {
   const [name, setName] = useState('');
+  const [weightCategory, setWeightCategory] = useState('');
+  const [ageCategory, setAgeCategory] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -10,7 +12,7 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, weightCategory, ageCategory }),
     })
     .then(response => {
       if (!response.ok) {
@@ -21,6 +23,8 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
     .then(data => {
       console.log('Success:', data);
       setName(''); // Reset the input field after successful submission
+      setWeightCategory('');
+      setAgeCategory('');
       onParticipantAdded(); // Trigger the refresh of the participant list
     })
     .catch((error) => {
@@ -36,6 +40,24 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Weight Category:
+        <input
+          type="text"
+          value={weightCategory}
+          onChange={(e) => setWeightCategory(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Age Category:
+        <input
+          type="text"
+          value={ageCategory}
+          onChange={(e) => setAgeCategory(e.target.value)}
           required
         />
       </label>

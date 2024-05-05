@@ -40,7 +40,9 @@ const AdminInterface = () => {
       <ul>
         {participants.map((participant) => (
           <li key={participant._id}>
-            {participant.name}
+            Name: {participant.name},
+            Weight Category: {participant.weightCategory},
+            Age Category: {participant.ageCategory}
             <button onClick={() => handleDelete(participant._id)}>Delete</button>
           </li>
         ))}
