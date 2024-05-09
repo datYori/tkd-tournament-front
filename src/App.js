@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import './App.css';
 import AdminInterface from './AdminInterface';
 import TournamentView from './TournamentView';
+import TournamentBracketView from './TournamentBracketView'; // Import the new component
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/admin" element={<AdminInterface />} />
             <Route path="/view" element={<TournamentView />} />
+            <Route path="/tournament-bracket/:weight/:age" element={<TournamentBracketView />} />
             {/* Add more routes as needed */}
           </Routes>
         </header>

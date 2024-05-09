@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import TournamentBracket from './TournamentBracket';
 
 const TournamentView = () => {
   const [participants, setParticipants] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [weightFilter, setWeightFilter] = useState('');
+  const [ageFilter, setAgeFilter] = useState('');
 
   useEffect(() => {
     fetch('http://localhost:3000/api/participants')
@@ -13,20 +14,23 @@ const TournamentView = () => {
   }, []);
 
   const sortedParticipants = React.useMemo(() => {
-    let sortableItems = [...participants];
-    if (sortConfig !== null) {
-      sortableItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableItems;
+    return [...participants].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
   }, [participants, sortConfig]);
+
+  const filteredParticipants = React.useMemo(() => {
+    return sortedParticipants.filter(participant => {
+      return (weightFilter ? participant.weightCategory === weightFilter : true) &&
+             (ageFilter ? participant.ageCategory === ageFilter : true);
+    });
+  }, [sortedParticipants, weightFilter, ageFilter]);
 
   const requestSort = key => {
     let direction = 'ascending';
@@ -43,10 +47,25 @@ const TournamentView = () => {
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
 
+  const uniqueWeightCategories = [...new Set(participants.map(p => p.weightCategory))];
+  const uniqueAgeCategories = [...new Set(participants.map(p => p.ageCategory))];
+
   return (
     <div>
       <h2 className="h2-heading">Tournament View</h2>
       <h3 className="h2-heading">Participants</h3>
+      <div>
+        {uniqueWeightCategories.map(weight => (
+          <button key={weight} onClick={() => setWeightFilter(weight)}>{weight}</button>
+        ))}
+        <button onClick={() => setWeightFilter('')}>Clear Weight Filter</button>
+      </div>
+      <div>
+        {uniqueAgeCategories.map(age => (
+          <button key={age} onClick={() => setAgeFilter(age)}>{age}</button>
+        ))}
+        <button onClick={() => setAgeFilter('')}>Clear Age Filter</button>
+      </div>
       <table className="participant-table">
         <thead>
           <tr>
@@ -56,7 +75,7 @@ const TournamentView = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedParticipants.map((participant, index) => (
+          {filteredParticipants.map((participant, index) => (
             <tr key={index}>
               <td>{participant.name}</td>
               <td>{participant.ageCategory}</td>
@@ -65,7 +84,6 @@ const TournamentView = () => {
           ))}
         </tbody>
       </table>
-      <TournamentBracket />
     </div>
   );
 };

@@ -90,3 +90,13 @@ button:hover {
 .th-sortable.descending::after {
   content: '▼';
 }
+
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  background-color: #161414;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
