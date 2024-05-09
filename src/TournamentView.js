@@ -15,7 +15,7 @@ const TournamentView = () => {
     <div>
       <h2 className="h2-heading">Tournament View</h2>
       <h3 className="h2-heading">Participants</h3>
-      <ParticipantTable participants={participants} />
+      <ParticipantTable participants={participants} showDeleteButton={false} />
     </div>
   );
 };

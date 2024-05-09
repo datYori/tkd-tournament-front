@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-const ParticipantTable = ({ participants }) => {
+const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [weightFilter, setWeightFilter] = useState('');
   const [ageFilter, setAgeFilter] = useState('');
@@ -36,8 +36,14 @@ const ParticipantTable = ({ participants }) => {
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
 
-  const uniqueWeightCategories = [...new Set(participants.map(p => p.weightCategory))];
-  const uniqueAgeCategories = [...new Set(participants.map(p => p.ageCategory))];
+  // Define unique categories within the useMemo to ensure they are recalculated when participants change
+  const uniqueWeightCategories = useMemo(() => {
+    return [...new Set(participants.map(p => p.weightCategory))];
+  }, [participants]);
+
+  const uniqueAgeCategories = useMemo(() => {
+    return [...new Set(participants.map(p => p.ageCategory))];
+  }, [participants]);
 
   return (
     <div>
@@ -59,6 +65,7 @@ const ParticipantTable = ({ participants }) => {
             <th className={`th-sortable ${getClassNamesFor('name')}`} onClick={() => requestSort('name')}>Name</th>
             <th className={`th-sortable ${getClassNamesFor('ageCategory')}`} onClick={() => requestSort('ageCategory')}>Age Category</th>
             <th className={`th-sortable ${getClassNamesFor('weightCategory')}`} onClick={() => requestSort('weightCategory')}>Weight Category</th>
+            {showDeleteButton && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -67,6 +74,11 @@ const ParticipantTable = ({ participants }) => {
               <td>{participant.name}</td>
               <td>{participant.ageCategory}</td>
               <td>{participant.weightCategory}</td>
+              {showDeleteButton && (
+                <td>
+                  <button onClick={() => onDelete(participant._id)}>Delete</button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

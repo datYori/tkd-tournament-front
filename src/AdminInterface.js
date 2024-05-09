@@ -67,7 +67,7 @@ const AdminInterface = () => {
     <div>
       <h2>Admin Interface</h2>
       <AddParticipantForm onParticipantAdded={fetchParticipants} />
-      <ParticipantTable participants={participants} />
+      <ParticipantTable participants={participants} onDelete={handleDelete} showDeleteButton={true} />
       <div>
         <h3>Generate Brackets</h3>
         {Object.values(uniquePairs).map((pair, index) => (
