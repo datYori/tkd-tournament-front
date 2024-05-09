@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AddParticipantForm from './AddParticipantForm';
+import ParticipantTable from './ParticipantTable';  // Import the reusable table component
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 const AdminInterface = () => {
@@ -8,11 +9,11 @@ const AdminInterface = () => {
 
   const fetchParticipants = () => {
     fetch('http://localhost:3000/api/participants')
-      .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
         setParticipants(data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching participants:', error);
       });
   };
@@ -29,7 +30,7 @@ const AdminInterface = () => {
     .then(() => {
       fetchParticipants(); // Refresh the list after deleting
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Error deleting participant:', error);
     });
   };
@@ -66,6 +67,7 @@ const AdminInterface = () => {
     <div>
       <h2>Admin Interface</h2>
       <AddParticipantForm onParticipantAdded={fetchParticipants} />
+      <ParticipantTable participants={participants} />
       <div>
         <h3>Generate Brackets</h3>
         {Object.values(uniquePairs).map((pair, index) => (
