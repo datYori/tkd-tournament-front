@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import AddParticipantForm from './AddParticipantForm';
-import ParticipantTable from './ParticipantTable';  // Import the reusable table component
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import ParticipantTable from './ParticipantTable';
+import { useNavigate } from 'react-router-dom';
 
 const AdminInterface = () => {
   const [participants, setParticipants] = useState([]);
-  const navigate = useNavigate(); // Hook for programmatically navigating
+  const navigate = useNavigate();
 
   const fetchParticipants = () => {
     fetch('http://localhost:3000/api/participants')
@@ -35,19 +35,23 @@ const AdminInterface = () => {
     });
   };
 
-  // Extract unique pairs of weight and age categories
-  const uniquePairs = participants.reduce((acc, participant) => {
-    const key = `${participant.weightCategory}/${participant.ageCategory}`;
+  // Function to generate unique tuples based on multiple categories
+  const uniqueTuples = participants.reduce((acc, participant) => {
+    const key = `${participant.weightCategory}/${participant.ageCategory}/${participant.gender}/${participant.kupCategory}`;
     if (!acc[key]) {
-      acc[key] = { weight: participant.weightCategory, age: participant.ageCategory };
+      acc[key] = {
+        weightCategory: participant.weightCategory,
+        ageCategory: participant.ageCategory,
+        gender: participant.gender,
+        kupCategory: participant.kupCategory
+      };
     }
     return acc;
   }, {});
 
-  // Function to handle bracket generation and navigation
-  const handleGenerateBracket = (weight, age) => {
-    // Trigger bracket generation on the server
-    fetch(`http://localhost:3000/api/generate-bracket/${weight}/${age}`, { method: 'POST' })
+  const handleGenerateBracket = (weightCategory, ageCategory, gender, kupCategory) => {
+    // API endpoint adjusted for new parameters
+    fetch(`http://localhost:3000/api/generate-bracket/${weightCategory}/${ageCategory}/${gender}/${kupCategory}`, { method: 'POST' })
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to generate bracket');
@@ -55,8 +59,8 @@ const AdminInterface = () => {
         return response.json();
       })
       .then(matches => {
-        // Navigate to the bracket view page
-        navigate(`/tournament-bracket/${weight}/${age}`);
+        // Navigate to the bracket view page with the new URL structure
+        navigate(`/tournament-bracket/${weightCategory}/${ageCategory}/${gender}/${kupCategory}`);
       })
       .catch(error => {
         console.error('Error generating bracket:', error);
@@ -70,9 +74,11 @@ const AdminInterface = () => {
       <ParticipantTable participants={participants} onDelete={handleDelete} showDeleteButton={true} />
       <div>
         <h3>Generate Brackets</h3>
-        {Object.values(uniquePairs).map((pair, index) => (
-          <button key={index} onClick={() => handleGenerateBracket(pair.weight, pair.age)}>
-            Generate bracket for {pair.weight} / {pair.age}
+        {Object.values(uniqueTuples).map((tuple, index) => (
+          <button
+            key={index}
+            onClick={() => handleGenerateBracket(tuple.weightCategory, tuple.ageCategory, tuple.gender, tuple.kupCategory)}>
+            Generate bracket for {tuple.weightCategory} / {tuple.ageCategory} / {tuple.gender} / {tuple.kupCategory}
           </button>
         ))}
       </div>

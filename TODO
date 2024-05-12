@@ -1,2 +1,3 @@
 - do not allow 2 times the same exact entry
-- do not allow the same name in 2 weight an/or age categories
+- do not allow the same name in 2 weightCategory an/or age categories
+- constraint age, weight, kup, gender categories to specific values ( from both back and front)

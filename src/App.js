@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path="/admin" element={<AdminInterface />} />
             <Route path="/view" element={<TournamentView />} />
-            <Route path="/tournament-bracket/:weight/:age" element={<TournamentBracketView />} />
+            <Route path="/tournament-bracket/:weightCategory/:age" element={<TournamentBracketView />} />
             {/* Add more routes as needed */}
           </Routes>
         </header>

@@ -4,6 +4,8 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
   const [name, setName] = useState('');
   const [weightCategory, setWeightCategory] = useState('');
   const [ageCategory, setAgeCategory] = useState('');
+  const [kupCategory, setkupCategory] = useState('');
+  const [gender, setGender] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,7 +14,7 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, weightCategory, ageCategory }),
+      body: JSON.stringify({ name, weightCategory, ageCategory, kupCategory, gender}),
     })
     .then(response => {
       if (!response.ok) {
@@ -35,7 +37,7 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Name:
+        Name ({'First name Last name'}):
         <input
           type="text"
           value={name}
@@ -44,7 +46,7 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
         />
       </label>
       <label>
-        Weight Category:
+        Weight Category ({'-/+ kg'}):
         <input
           type="text"
           value={weightCategory}
@@ -58,6 +60,24 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
           type="text"
           value={ageCategory}
           onChange={(e) => setAgeCategory(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Kup Category ({'>=3rd kup = A / 8-4th kup = B'}):
+        <input
+          type="text"
+          value={kupCategory}
+          onChange={(e) => setkupCategory(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Gender ({'M / F'}):
+        <input
+          type="text"
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
           required
         />
       </label>
