@@ -50,22 +50,29 @@ const AdminInterface = () => {
   }, {});
 
   const handleGenerateBracket = (weightCategory, ageCategory, gender, kupCategory) => {
-    // API endpoint adjusted for new parameters
-    fetch(`http://localhost:3000/api/generate-bracket/${weightCategory}/${ageCategory}/${gender}/${kupCategory}`, { method: 'POST' })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to generate bracket');
-        }
-        return response.json();
-      })
-      .then(matches => {
-        // Navigate to the bracket view page with the new URL structure
-        navigate(`/tournament-bracket/${weightCategory}/${ageCategory}/${gender}/${kupCategory}`);
-      })
-      .catch(error => {
-        console.error('Error generating bracket:', error);
-      });
+    // Using the adjusted API endpoint and sending data as JSON in the request body
+    fetch(`http://localhost:3000/api/tournaments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ weightCategory, ageCategory, gender, kupCategory })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to generate bracket');
+      }
+      return response.json();
+    })
+    .then(tournament => {
+      // Navigate to the bracket view page with the new tournament details
+      navigate(`/tournament-bracket/${tournament._id}`); // Use the generated tournament ID for navigation
+    })
+    .catch(error => {
+      console.error('Error generating bracket:', error);
+    });
   };
+
 
   return (
     <div>

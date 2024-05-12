@@ -2,48 +2,60 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const TournamentBracketView = () => {
-  const { weightCategory, age } = useParams();
-  const [matches, setMatches] = useState([]);
+  const { tournamentId } = useParams();
+  const [tournament, setTournament] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMatches = async () => {
+    const fetchTournament = async () => {
       try {
-        console.log(`Fetching matches for ${weightCategory}/${age}`); // Debugging log
-        const response = await fetch(`http://localhost:3000/api/matches/${weightCategory}/${age}`);
+        console.log(`Fetching tournament details for ID: ${tournamentId}`); // Debugging log
+        const response = await fetch(`http://localhost:3000/api/tournaments/${tournamentId}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log('Fetched matches:', data); // Debugging log
-        setMatches(data);
+        console.log('Fetched tournament:', data); // Debugging log
+        setTournament(data);
       } catch (err) {
-        console.error('Error while fetching matches:', err); // More explicit error logging
+        console.error('Error while fetching tournament:', err); // More explicit error logging
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMatches();
-  }, [weightCategory, age]);
+    fetchTournament();
+  }, [tournamentId]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
-      <h2>Tournament Bracket for {weightCategory} / {age} </h2>
-      {matches.length > 0 ? (
-        <ul>
-          {matches.map(match => (
-            <li key={match._id}>
-              {match.participants.join(' vs ')} - Winner: {match.winner || "TBD"}
-            </li>
-          ))}
-        </ul>
-      ) : <p>No matches found for this category.</p>}
+      {tournament ? (
+        <>
+          <h2>Tournament Details</h2>
+          <div>
+            <strong>Category: </strong>{tournament.weightCategory} / {tournament.ageCategory} / {tournament.gender} / {tournament.kupCategory}
+            <br />
+            <strong>Status: </strong>{tournament.status}
+            <br />
+            <strong>Start Date: </strong>{new Date(tournament.startDate).toLocaleDateString()}
+          </div>
+          <h3>Matches</h3>
+          {tournament.matches && tournament.matches.length > 0 ? (
+            <ul>
+              {tournament.matches.map(match => (
+                <li key={match._id || match.id}>
+                  {match.participant} vs {match.opponent} - Winner: {match.result && match.result.winner ? match.result.winner : "TBD"}
+                </li>
+              ))}
+            </ul>
+          ) : <p>No matches have been scheduled for this tournament.</p>}
+        </>
+      ) : <p>No tournament details available.</p>}
     </div>
   );
 };

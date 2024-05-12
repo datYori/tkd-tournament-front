@@ -16,7 +16,8 @@ function App() {
           <Routes>
             <Route path="/admin" element={<AdminInterface />} />
             <Route path="/view" element={<TournamentView />} />
-            <Route path="/tournament-bracket/:weightCategory/:age" element={<TournamentBracketView />} />
+            // Updated to use tournament ID for bracket navigation
+            <Route path="/tournament-bracket/:tournamentId" element={<TournamentBracketView />} />
             {/* Add more routes as needed */}
           </Routes>
         </header>
