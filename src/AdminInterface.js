@@ -50,7 +50,6 @@ const AdminInterface = () => {
   }, {});
 
   const handleGenerateBracket = (weightCategory, ageCategory, gender, kupCategory) => {
-    // Using the adjusted API endpoint and sending data as JSON in the request body
     fetch(`http://localhost:3000/api/tournaments`, {
       method: 'POST',
       headers: {
@@ -65,14 +64,42 @@ const AdminInterface = () => {
       return response.json();
     })
     .then(tournament => {
-      // Navigate to the bracket view page with the new tournament details
-      navigate(`/tournament-bracket/${tournament._id}`); // Use the generated tournament ID for navigation
+      navigate(`/tournament-bracket/${tournament._id}`);
     })
     .catch(error => {
       console.error('Error generating bracket:', error);
     });
   };
 
+  const handleGenerateAllBrackets = () => {
+    const generatePromises = Object.values(uniqueTuples).map(tuple => {
+      return fetch(`http://localhost:3000/api/tournaments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tuple)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to generate bracket');
+        }
+        return response.json();
+      });
+    });
+
+    Promise.all(generatePromises)
+      .then(results => {
+        results.forEach(tournament => {
+          console.log(`Generated tournament with ID: ${tournament._id}`);
+          // Optionally, navigate to the last generated tournament bracket
+          // navigate(`/tournament-bracket/${tournament._id}`);
+        });
+      })
+      .catch(error => {
+        console.error('Error generating brackets:', error);
+      });
+  };
 
   return (
     <div>
@@ -81,6 +108,8 @@ const AdminInterface = () => {
       <ParticipantTable participants={participants} onDelete={handleDelete} showDeleteButton={true} />
       <div>
         <h3>Generate Brackets</h3>
+        <button onClick={handleGenerateAllBrackets}>Generate All Brackets</button>
+        <br></br>
         {Object.values(uniqueTuples).map((tuple, index) => (
           <button
             key={index}
