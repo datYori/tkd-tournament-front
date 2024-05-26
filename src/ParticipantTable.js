@@ -23,7 +23,7 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
              (filters.ageCategory ? participant.ageCategory === filters.ageCategory : true) &&
              (filters.gender ? participant.gender === filters.gender : true) &&
              (filters.kupCategory ? participant.kupCategory === filters.kupCategory : true) &&
-             (filters.name ? participant.name === filters.name : true);
+             (filters.name ? participant.name.toLowerCase().includes(filters.name.toLowerCase()) : true);
     });
   }, [sortedParticipants, filters]);
 
@@ -52,8 +52,7 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
       weightCategories: [...new Set(participants.map(p => p.weightCategory))],
       ageCategories: [...new Set(participants.map(p => p.ageCategory))],
       genders: [...new Set(participants.map(p => p.gender))],
-      kupCategories: [...new Set(participants.map(p => p.kupCategory))],
-      names: [...new Set(participants.map(p => p.name))]
+      kupCategories: [...new Set(participants.map(p => p.kupCategory))]
     };
     return categories;
   }, [participants]);
@@ -65,12 +64,12 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
           <tr>
             <th className={`th-sortable ${getClassNamesFor('name')}`} onClick={() => requestSort('name')}>
               Name
-              <select value={filters.name} onChange={e => handleFilterChange(e, 'name')}>
-                <option value="">All</option>
-                {uniqueCategories.names.map(name => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </select>
+              <input
+                type="text"
+                value={filters.name}
+                onChange={e => handleFilterChange(e, 'name')}
+                placeholder="Filter by name"
+              />
             </th>
             <th className={`th-sortable ${getClassNamesFor('ageCategory')}`} onClick={() => requestSort('ageCategory')}>
               Age Category
