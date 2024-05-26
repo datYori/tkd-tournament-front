@@ -62,50 +62,112 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
       <table className="participant-table">
         <thead>
           <tr>
-            <th className={`th-sortable ${getClassNamesFor('name')}`} onClick={() => requestSort('name')}>
-              Name
-              <input
-                type="text"
-                value={filters.name}
-                onChange={e => handleFilterChange(e, 'name')}
-                placeholder="Filter by name"
-              />
+            <th>
+              <div className={`th-sortable ${getClassNamesFor('name')}`}>
+                <span style={{ flex: '1' }}>Name</span>
+                <input
+                  type="text"
+                  value={filters.name}
+                  onChange={e => handleFilterChange(e, 'name')}
+                  placeholder="Filter by name"
+                  style={{ flex: '2', marginLeft: '10px' }}
+                />
+                <span
+                  className="sort-arrow"
+                  onClick={() => requestSort('name')}
+                  style={{ cursor: 'pointer', marginLeft: '5px' }}
+                >
+                  ⬍
+                </span>
+              </div>
             </th>
-            <th className={`th-sortable ${getClassNamesFor('ageCategory')}`} onClick={() => requestSort('ageCategory')}>
-              Age Category
-              <select value={filters.ageCategory} onChange={e => handleFilterChange(e, 'ageCategory')}>
-                <option value="">All</option>
-                {uniqueCategories.ageCategories.map(age => (
-                  <option key={age} value={age}>{age}</option>
-                ))}
-              </select>
+            <th>
+              <div className={`th-sortable ${getClassNamesFor('ageCategory')}`}>
+                <span style={{ flex: '1' }}>Age Category</span>
+                <select
+                  value={filters.ageCategory}
+                  onChange={e => handleFilterChange(e, 'ageCategory')}
+                  style={{ flex: '2', marginLeft: '10px' }}
+                >
+                  <option value="">All</option>
+                  {uniqueCategories.ageCategories.map(age => (
+                    <option key={age} value={age}>{age}</option>
+                  ))}
+                </select>
+                <span
+                  className="sort-arrow"
+                  onClick={() => requestSort('ageCategory')}
+                  style={{ cursor: 'pointer', marginLeft: '5px' }}
+                >
+                  ⬍
+                </span>
+              </div>
             </th>
-            <th className={`th-sortable ${getClassNamesFor('weightCategory')}`} onClick={() => requestSort('weightCategory')}>
-              Weight Category
-              <select value={filters.weightCategory} onChange={e => handleFilterChange(e, 'weightCategory')}>
-                <option value="">All</option>
-                {uniqueCategories.weightCategories.map(weight => (
-                  <option key={weight} value={weight}>{weight}</option>
-                ))}
-              </select>
+            <th>
+              <div className={`th-sortable ${getClassNamesFor('weightCategory')}`}>
+                <span style={{ flex: '1' }}>Weight Category</span>
+                <select
+                  value={filters.weightCategory}
+                  onChange={e => handleFilterChange(e, 'weightCategory')}
+                  style={{ flex: '2', marginLeft: '10px' }}
+                >
+                  <option value="">All</option>
+                  {uniqueCategories.weightCategories.map(weight => (
+                    <option key={weight} value={weight}>{weight}</option>
+                  ))}
+                </select>
+                <span
+                  className="sort-arrow"
+                  onClick={() => requestSort('weightCategory')}
+                  style={{ cursor: 'pointer', marginLeft: '5px' }}
+                >
+                  ⬍
+                </span>
+              </div>
             </th>
-            <th className={`th-sortable ${getClassNamesFor('gender')}`} onClick={() => requestSort('gender')}>
-              Gender
-              <select value={filters.gender} onChange={e => handleFilterChange(e, 'gender')}>
-                <option value="">All</option>
-                {uniqueCategories.genders.map(gender => (
-                  <option key={gender} value={gender}>{gender}</option>
-                ))}
-              </select>
+            <th>
+              <div className={`th-sortable ${getClassNamesFor('gender')}`}>
+                <span style={{ flex: '1' }}>Gender</span>
+                <select
+                  value={filters.gender}
+                  onChange={e => handleFilterChange(e, 'gender')}
+                  style={{ flex: '2', marginLeft: '10px' }}
+                >
+                  <option value="">All</option>
+                  {uniqueCategories.genders.map(gender => (
+                    <option key={gender} value={gender}>{gender}</option>
+                  ))}
+                </select>
+                <span
+                  className="sort-arrow"
+                  onClick={() => requestSort('gender')}
+                  style={{ cursor: 'pointer', marginLeft: '5px' }}
+                >
+                  ⬍
+                </span>
+              </div>
             </th>
-            <th className={`th-sortable ${getClassNamesFor('kupCategory')}`} onClick={() => requestSort('kupCategory')}>
-              Kup Category
-              <select value={filters.kupCategory} onChange={e => handleFilterChange(e, 'kupCategory')}>
-                <option value="">All</option>
-                {uniqueCategories.kupCategories.map(kup => (
-                  <option key={kup} value={kup}>{kup}</option>
-                ))}
-              </select>
+            <th>
+              <div className={`th-sortable ${getClassNamesFor('kupCategory')}`}>
+                <span style={{ flex: '1' }}>Kup Category</span>
+                <select
+                  value={filters.kupCategory}
+                  onChange={e => handleFilterChange(e, 'kupCategory')}
+                  style={{ flex: '2', marginLeft: '10px' }}
+                >
+                  <option value="">All</option>
+                  {uniqueCategories.kupCategories.map(kup => (
+                    <option key={kup} value={kup}>{kup}</option>
+                  ))}
+                </select>
+                <span
+                  className="sort-arrow"
+                  onClick={() => requestSort('kupCategory')}
+                  style={{ cursor: 'pointer', marginLeft: '5px' }}
+                >
+                  ⬍
+                </span>
+              </div>
             </th>
             {showDeleteButton && <th>Actions</th>}
           </tr>
