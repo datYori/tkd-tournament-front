@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import AddParticipantForm from './AddParticipantForm';
-import ParticipantTable from './ParticipantTable';
 import { useNavigate } from 'react-router-dom';
 
-const AdminInterface = () => {
+const GenerateTournament = () => {
   const [participants, setParticipants] = useState([]);
   const navigate = useNavigate();
 
@@ -22,20 +20,6 @@ const AdminInterface = () => {
     fetchParticipants();
   }, []);
 
-  const handleDelete = (id) => {
-    fetch(`http://localhost:3000/api/participants/${id}`, {
-      method: 'DELETE',
-    })
-    .then(response => response.json())
-    .then(() => {
-      fetchParticipants(); // Refresh the list after deleting
-    })
-    .catch(error => {
-      console.error('Error deleting participant:', error);
-    });
-  };
-
-  // Function to generate unique tuples based on multiple categories
   const uniqueTuples = participants.reduce((acc, participant) => {
     const key = `${participant.weightCategory}/${participant.ageCategory}/${participant.gender}/${participant.kupCategory}`;
     if (!acc[key]) {
@@ -92,8 +76,6 @@ const AdminInterface = () => {
       .then(results => {
         results.forEach(tournament => {
           console.log(`Generated tournament with ID: ${tournament._id}`);
-          // Optionally, navigate to the last generated tournament bracket
-          // navigate(`/tournament-bracket/${tournament._id}`);
         });
       })
       .catch(error => {
@@ -103,23 +85,18 @@ const AdminInterface = () => {
 
   return (
     <div>
-      <h2>Admin Interface</h2>
-      <AddParticipantForm onParticipantAdded={fetchParticipants} />
-      <ParticipantTable participants={participants} onDelete={handleDelete} showDeleteButton={true} />
-      <div>
-        <h3>Generate Brackets</h3>
-        <button onClick={handleGenerateAllBrackets}>Generate All Brackets</button>
-        <br></br>
-        {Object.values(uniqueTuples).map((tuple, index) => (
-          <button
-            key={index}
-            onClick={() => handleGenerateBracket(tuple.weightCategory, tuple.ageCategory, tuple.gender, tuple.kupCategory)}>
-            Generate bracket for {tuple.weightCategory} / {tuple.ageCategory} / {tuple.gender} / {tuple.kupCategory}
-          </button>
-        ))}
-      </div>
+      <h3>Generate Brackets</h3>
+      <button onClick={handleGenerateAllBrackets}>Generate All Brackets</button>
+      <br></br>
+      {Object.values(uniqueTuples).map((tuple, index) => (
+        <button
+          key={index}
+          onClick={() => handleGenerateBracket(tuple.weightCategory, tuple.ageCategory, tuple.gender, tuple.kupCategory)}>
+          Generate bracket for {tuple.weightCategory} / {tuple.ageCategory} / {tuple.gender} / {tuple.kupCategory}
+        </button>
+      ))}
     </div>
   );
 };
 
-export default AdminInterface;
+export default GenerateTournament;

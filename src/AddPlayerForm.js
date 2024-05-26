@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddParticipantForm = ({ onParticipantAdded }) => {
+const AddPlayerForm = ({ onParticipantAdded }) => {
   const [name, setName] = useState('');
   const [weightCategory, setWeightCategory] = useState('');
   const [ageCategory, setAgeCategory] = useState('');
@@ -86,4 +86,4 @@ const AddParticipantForm = ({ onParticipantAdded }) => {
   );
 };
 
-export default AddParticipantForm;
+export default AddPlayerForm;
