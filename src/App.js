@@ -19,7 +19,6 @@ function App() {
             <Route path="/addplayer" element={<AddPlayer />} />
             <Route path="/view" element={<TournamentView />} />
             <Route path="/generate-tournament" element={<GenerateTournament />} />
-            // Updated to use tournament ID for bracket navigation
             <Route path="/tournament-bracket/:tournamentId" element={<TournamentBracketView />} />
             {/* Add more routes as needed */}
           </Routes>
