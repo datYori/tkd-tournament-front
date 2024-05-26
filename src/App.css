@@ -20,12 +20,12 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #0b0c0c;
 }
 
 /* Additional styles for buttons for consistency */
 button {
-  background-color: #61dafb;
+  background-color: #0b0c0c;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -69,34 +69,49 @@ button:hover {
 
 /* Table Header Sortable Styling */
 .th-sortable {
-  cursor: pointer;
   position: relative;
-  user-select: none; /* Prevents text selection */
+  display: flex;
+  align-items: center;
 }
 
-.th-sortable::after {
-  content: '⬍'; /* Default arrow */
-  font-size: 12px;
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-50%);
+.column-title {
+  flex: 1;
 }
 
-.th-sortable.ascending::after {
-  content: '▲';
+.filter-input {
+  flex: 2;
+  margin-left: 10px;
 }
 
-.th-sortable.descending::after {
-  content: '▼';
+.filter-select {
+  flex: 2;
+  margin-left: 10px;
 }
 
-button {
-  margin: 5px;
-  padding: 8px 16px;
-  background-color: #161414;
-  border: none;
-  border-radius: 4px;
+.sort-arrow {
+  margin-left: 5px;
   cursor: pointer;
+  font-size: 12px;
 }
 
+.bracket {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20px;
+}
+
+.match {
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  text-align: center;
+  width: 200px;
+}

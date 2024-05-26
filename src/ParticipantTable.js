@@ -64,30 +64,29 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
           <tr>
             <th>
               <div className={`th-sortable ${getClassNamesFor('name')}`}>
-                <span style={{ flex: '1' }}>Name</span>
+                <span className="column-title">Name</span>
                 <input
                   type="text"
                   value={filters.name}
                   onChange={e => handleFilterChange(e, 'name')}
                   placeholder="Filter by name"
-                  style={{ flex: '2', marginLeft: '10px' }}
+                  className="filter-input"
                 />
                 <span
                   className="sort-arrow"
                   onClick={() => requestSort('name')}
-                  style={{ cursor: 'pointer', marginLeft: '5px' }}
                 >
-                  ⬍
+                  {getClassNamesFor('name') === 'ascending' ? '▲' : '▼'}
                 </span>
               </div>
             </th>
             <th>
               <div className={`th-sortable ${getClassNamesFor('ageCategory')}`}>
-                <span style={{ flex: '1' }}>Age Category</span>
+                <span className="column-title">Age Category</span>
                 <select
                   value={filters.ageCategory}
                   onChange={e => handleFilterChange(e, 'ageCategory')}
-                  style={{ flex: '2', marginLeft: '10px' }}
+                  className="filter-select"
                 >
                   <option value="">All</option>
                   {uniqueCategories.ageCategories.map(age => (
@@ -97,19 +96,18 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
                 <span
                   className="sort-arrow"
                   onClick={() => requestSort('ageCategory')}
-                  style={{ cursor: 'pointer', marginLeft: '5px' }}
                 >
-                  ⬍
+                  {getClassNamesFor('ageCategory') === 'ascending' ? '▲' : '▼'}
                 </span>
               </div>
             </th>
             <th>
               <div className={`th-sortable ${getClassNamesFor('weightCategory')}`}>
-                <span style={{ flex: '1' }}>Weight Category</span>
+                <span className="column-title">Weight Category</span>
                 <select
                   value={filters.weightCategory}
                   onChange={e => handleFilterChange(e, 'weightCategory')}
-                  style={{ flex: '2', marginLeft: '10px' }}
+                  className="filter-select"
                 >
                   <option value="">All</option>
                   {uniqueCategories.weightCategories.map(weight => (
@@ -119,19 +117,18 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
                 <span
                   className="sort-arrow"
                   onClick={() => requestSort('weightCategory')}
-                  style={{ cursor: 'pointer', marginLeft: '5px' }}
                 >
-                  ⬍
+                  {getClassNamesFor('weightCategory') === 'ascending' ? '▲' : '▼'}
                 </span>
               </div>
             </th>
             <th>
               <div className={`th-sortable ${getClassNamesFor('gender')}`}>
-                <span style={{ flex: '1' }}>Gender</span>
+                <span className="column-title">Gender</span>
                 <select
                   value={filters.gender}
                   onChange={e => handleFilterChange(e, 'gender')}
-                  style={{ flex: '2', marginLeft: '10px' }}
+                  className="filter-select"
                 >
                   <option value="">All</option>
                   {uniqueCategories.genders.map(gender => (
@@ -141,19 +138,18 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
                 <span
                   className="sort-arrow"
                   onClick={() => requestSort('gender')}
-                  style={{ cursor: 'pointer', marginLeft: '5px' }}
                 >
-                  ⬍
+                  {getClassNamesFor('gender') === 'ascending' ? '▲' : '▼'}
                 </span>
               </div>
             </th>
             <th>
               <div className={`th-sortable ${getClassNamesFor('kupCategory')}`}>
-                <span style={{ flex: '1' }}>Kup Category</span>
+                <span className="column-title">Kup Category</span>
                 <select
                   value={filters.kupCategory}
                   onChange={e => handleFilterChange(e, 'kupCategory')}
-                  style={{ flex: '2', marginLeft: '10px' }}
+                  className="filter-select"
                 >
                   <option value="">All</option>
                   {uniqueCategories.kupCategories.map(kup => (
@@ -163,9 +159,8 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
                 <span
                   className="sort-arrow"
                   onClick={() => requestSort('kupCategory')}
-                  style={{ cursor: 'pointer', marginLeft: '5px' }}
                 >
-                  ⬍
+                  {getClassNamesFor('kupCategory') === 'ascending' ? '▲' : '▼'}
                 </span>
               </div>
             </th>
