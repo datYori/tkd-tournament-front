@@ -2,10 +2,13 @@ import React, { useState, useMemo } from 'react';
 
 const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-  const [weightCategoryFilter, setWeightFilter] = useState('');
-  const [ageFilter, setAgeFilter] = useState('');
-  const [genderFilter, setGenderFilter] = useState('');
-  const [kupCategoryFilter, setKupCategoryFilter] = useState('');
+  const [filters, setFilters] = useState({
+    weightCategory: '',
+    ageCategory: '',
+    gender: '',
+    kupCategory: '',
+    name: ''
+  });
 
   const sortedParticipants = useMemo(() => {
     return [...participants].sort((a, b) => {
@@ -16,12 +19,13 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
 
   const filteredParticipants = useMemo(() => {
     return sortedParticipants.filter(participant => {
-      return (weightCategoryFilter ? participant.weightCategory === weightCategoryFilter : true) &&
-             (ageFilter ? participant.ageCategory === ageFilter : true) &&
-             (genderFilter ? participant.gender === genderFilter : true) &&
-             (kupCategoryFilter ? participant.kupCategory === kupCategoryFilter : true);
+      return (filters.weightCategory ? participant.weightCategory === filters.weightCategory : true) &&
+             (filters.ageCategory ? participant.ageCategory === filters.ageCategory : true) &&
+             (filters.gender ? participant.gender === filters.gender : true) &&
+             (filters.kupCategory ? participant.kupCategory === filters.kupCategory : true) &&
+             (filters.name ? participant.name === filters.name : true);
     });
-  }, [sortedParticipants, weightCategoryFilter, ageFilter, genderFilter, kupCategoryFilter]);
+  }, [sortedParticipants, filters]);
 
   const requestSort = key => {
     let direction = 'ascending';
@@ -35,51 +39,75 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false }) 
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
 
+  const handleFilterChange = (e, key) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [key]: e.target.value
+    }));
+  };
+
   // Generate unique category sets
   const uniqueCategories = useMemo(() => {
     const categories = {
       weightCategories: [...new Set(participants.map(p => p.weightCategory))],
       ageCategories: [...new Set(participants.map(p => p.ageCategory))],
       genders: [...new Set(participants.map(p => p.gender))],
-      kupCategories: [...new Set(participants.map(p => p.kupCategory))]
+      kupCategories: [...new Set(participants.map(p => p.kupCategory))],
+      names: [...new Set(participants.map(p => p.name))]
     };
     return categories;
   }, [participants]);
 
   return (
     <div>
-      <div>
-        {uniqueCategories.weightCategories.map(weightCategory => (
-          <button key={weightCategory} onClick={() => setWeightFilter(weightCategory)}>{weightCategory}</button>
-        ))}
-        <button onClick={() => setWeightFilter('')}>Clear Weight Filter</button>
-      </div>
-      <div>
-        {uniqueCategories.ageCategories.map(age => (
-          <button key={age} onClick={() => setAgeFilter(age)}>{age}</button>
-        ))}
-        <button onClick={() => setAgeFilter('')}>Clear Age Filter</button>
-      </div>
-      <div>
-        {uniqueCategories.genders.map(gender => (
-          <button key={gender} onClick={() => setGenderFilter(gender)}>{gender}</button>
-        ))}
-        <button onClick={() => setGenderFilter('')}>Clear Gender Filter</button>
-      </div>
-      <div>
-        {uniqueCategories.kupCategories.map(kupCategory => (
-          <button key={kupCategory} onClick={() => setKupCategoryFilter(kupCategory)}>{kupCategory}</button>
-        ))}
-        <button onClick={() => setKupCategoryFilter('')}>Clear Kup Filter</button>
-      </div>
       <table className="participant-table">
         <thead>
           <tr>
-            <th className={`th-sortable ${getClassNamesFor('name')}`} onClick={() => requestSort('name')}>Name</th>
-            <th className={`th-sortable ${getClassNamesFor('ageCategory')}`} onClick={() => requestSort('ageCategory')}>Age Category</th>
-            <th className={`th-sortable ${getClassNamesFor('weightCategory')}`} onClick={() => requestSort('weightCategory')}>Weight Category</th>
-            <th className={`th-sortable ${getClassNamesFor('gender')}`} onClick={() => requestSort('gender')}>Gender</th>
-            <th className={`th-sortable ${getClassNamesFor('kupCategory')}`} onClick={() => requestSort('kupCategory')}>Kup Category</th>
+            <th className={`th-sortable ${getClassNamesFor('name')}`} onClick={() => requestSort('name')}>
+              Name
+              <select value={filters.name} onChange={e => handleFilterChange(e, 'name')}>
+                <option value="">All</option>
+                {uniqueCategories.names.map(name => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            </th>
+            <th className={`th-sortable ${getClassNamesFor('ageCategory')}`} onClick={() => requestSort('ageCategory')}>
+              Age Category
+              <select value={filters.ageCategory} onChange={e => handleFilterChange(e, 'ageCategory')}>
+                <option value="">All</option>
+                {uniqueCategories.ageCategories.map(age => (
+                  <option key={age} value={age}>{age}</option>
+                ))}
+              </select>
+            </th>
+            <th className={`th-sortable ${getClassNamesFor('weightCategory')}`} onClick={() => requestSort('weightCategory')}>
+              Weight Category
+              <select value={filters.weightCategory} onChange={e => handleFilterChange(e, 'weightCategory')}>
+                <option value="">All</option>
+                {uniqueCategories.weightCategories.map(weight => (
+                  <option key={weight} value={weight}>{weight}</option>
+                ))}
+              </select>
+            </th>
+            <th className={`th-sortable ${getClassNamesFor('gender')}`} onClick={() => requestSort('gender')}>
+              Gender
+              <select value={filters.gender} onChange={e => handleFilterChange(e, 'gender')}>
+                <option value="">All</option>
+                {uniqueCategories.genders.map(gender => (
+                  <option key={gender} value={gender}>{gender}</option>
+                ))}
+              </select>
+            </th>
+            <th className={`th-sortable ${getClassNamesFor('kupCategory')}`} onClick={() => requestSort('kupCategory')}>
+              Kup Category
+              <select value={filters.kupCategory} onChange={e => handleFilterChange(e, 'kupCategory')}>
+                <option value="">All</option>
+                {uniqueCategories.kupCategories.map(kup => (
+                  <option key={kup} value={kup}>{kup}</option>
+                ))}
+              </select>
+            </th>
             {showDeleteButton && <th>Actions</th>}
           </tr>
         </thead>
