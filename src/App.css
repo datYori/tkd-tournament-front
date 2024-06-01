@@ -1,6 +1,17 @@
 /* Existing App.css content */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #282c34; /* Apply the same background color to the entire page */
+  color: white; /* Ensure text is readable on the dark background */
+}
+
 .App {
   text-align: center;
+  min-height: 100vh; /* Ensure it takes full height */
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -9,18 +20,31 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #282c34; /* Ensure the header background matches the body */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* Center align items vertically */
+  justify-content: flex-start; /* Align items to the start (left) */
+  padding: 10px 20px; /* Add padding for spacing */
   font-size: calc(10px + 2vmin);
   color: white;
+  position: relative; /* Ensure the header is positioned relative to its container */
+  width: 100%;
 }
 
-.App-link {
-  color: #0b0c0c;
+.navigation {
+  display: flex;
+  gap: 10px; /* Add gap between buttons for spacing */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.App-main {
+  margin-top: 60px; /* Add some margin to the top to avoid overlapping with navigation */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #282c34; /* Match the main content background color */
 }
 
 /* Additional styles for buttons for consistency */
@@ -33,9 +57,10 @@ button {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  margin: 0; /* Remove margin to avoid unwanted spacing */
   transition-duration: 0.4s;
   cursor: pointer;
+  border-radius: 5px; /* Add border radius for smoother corners */
 }
 
 button:hover {
@@ -45,25 +70,25 @@ button:hover {
 
 /* New Table Styles */
 .participant-table {
-  width: 80%; /* Width relative to its container for better responsiveness */
+  width: 80%;
   border-collapse: collapse;
-  margin: 20px auto; /* Centered and with vertical spacing */
+  margin: 20px auto;
 }
 
 .participant-table th, .participant-table td {
-  border: 1px solid #ddd; /* Light grey border for readability */
+  border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
 .participant-table th {
-  background-color: #282c34; /* Dark header to match App header */
+  background-color: #282c34;
   color: white;
 }
 
 /* Ensures that headings stand out */
 .h2-heading {
-  color: #282c34;
+  color: #ffffff; /* Change heading color to ensure readability */
   font-size: 24px;
 }
 
@@ -94,39 +119,15 @@ button:hover {
   font-size: 12px;
 }
 
-/* New Table Styles */
-.participant-table {
-  width: 80%;
-  border-collapse: collapse;
-  margin: 20px auto;
-}
-
-.participant-table th, .participant-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.participant-table th {
-  background-color: #282c34;
-  color: white;
-}
-
-.filters {
-  display: flex;
-  justify-content: center;
-  margin: 10px 0;
-}
-
-.filters select {
-  margin: 0 10px;
-  padding: 5px;
-}
-
 /* Disabled button style */
 button:disabled {
   background-color: grey;
   color: white;
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+/* Filter Container */
+.filter-container {
+  margin-top: 5px;
 }

@@ -11,10 +11,13 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <Link to="/addplayer"><button>Add Participant</button></Link>
-          <Link to="/view"><button>View</button></Link>
-          <Link to="/generate-tournament"><button>Generate</button></Link>
-
+          <nav className="navigation">
+            <Link to="/addplayer"><button>Add Participant</button></Link>
+            <Link to="/view"><button>View</button></Link>
+            <Link to="/generate-tournament"><button>Generate</button></Link>
+          </nav>
+        </header>
+        <main className="App-main">
           <Routes>
             <Route path="/addplayer" element={<AddPlayer />} />
             <Route path="/view" element={<TournamentView />} />
@@ -22,7 +25,7 @@ function App() {
             <Route path="/tournament-bracket/:tournamentId" element={<TournamentBracketView />} />
             {/* Add more routes as needed */}
           </Routes>
-        </header>
+        </main>
       </div>
     </Router>
   );
