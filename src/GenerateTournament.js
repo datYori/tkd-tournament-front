@@ -52,51 +52,6 @@ const GenerateTournament = () => {
     .catch(error => console.error('Error generating bracket:', error));
   };
 
-  const handleGenerateAllBrackets = () => {
-    const uniqueTuples = participants.reduce((acc, participant) => {
-      const key = `${participant.weightCategory}/${participant.ageCategory}/${participant.gender}/${participant.kupCategory}`;
-      if (!acc[key]) {
-        acc[key] = {
-          weightCategory: participant.weightCategory,
-          ageCategory: participant.ageCategory,
-          gender: participant.gender,
-          kupCategory: participant.kupCategory
-        };
-      }
-      return acc;
-    }, {});
-
-    const generatePromises = Object.values(uniqueTuples).map(tuple => {
-      const combatZone = combatZones[`${tuple.weightCategory}/${tuple.ageCategory}/${tuple.gender}/${tuple.kupCategory}`];
-      if (!combatZone) {
-        alert(`Please select a combat zone for ${tuple.weightCategory} / ${tuple.ageCategory} / ${tuple.gender} / ${tuple.kupCategory}`);
-        return Promise.reject('Combat zone not selected');
-      }
-      return fetch('http://localhost:3000/api/tournaments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...tuple, combatZone })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to generate bracket');
-        }
-        return response.json();
-      });
-    });
-
-    Promise.all(generatePromises)
-      .then(results => {
-        results.forEach(tournament => {
-          console.log(`Generated tournament with ID: ${tournament._id}`);
-        });
-        fetchTournaments();  // Refresh the tournament list
-      })
-      .catch(error => {
-        console.error('Error generating brackets:', error);
-      });
-  };
-
   const handleDeleteTournament = (id) => {
     if (!window.confirm('Are you sure you want to delete this tournament?')) return;
 
@@ -174,7 +129,6 @@ const GenerateTournament = () => {
   return (
     <div>
       <h3>Generate Brackets</h3>
-      <button onClick={handleGenerateAllBrackets}>Generate All Brackets</button>
 
       <table className="participant-table">
         <thead>
