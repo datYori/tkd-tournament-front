@@ -176,28 +176,62 @@ const GenerateTournament = () => {
       <h3>Generate Brackets</h3>
       <button onClick={handleGenerateAllBrackets}>Generate All Brackets</button>
 
-      <div className="filters">
-        {['weightCategory', 'ageCategory', 'gender', 'kupCategory'].map(category => (
-          <select
-            key={category}
-            value={filters[category]}
-            onChange={e => setFilters({ ...filters, [category]: e.target.value })}
-          >
-            {uniqueCategories(category).map(value => (
-              <option key={value} value={value}>{value}</option>
-            ))}
-          </select>
-        ))}
-      </div>
-
       <table className="participant-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Age Category</th>
-            <th>Weight Category</th>
-            <th>Gender</th>
-            <th>Kup Category</th>
+            <th>
+              Age Category
+              <div className="filter-container">
+                <select
+                  value={filters.ageCategory}
+                  onChange={e => setFilters({ ...filters, ageCategory: e.target.value })}
+                >
+                  {uniqueCategories('ageCategory').map(value => (
+                    <option key={value} value={value}>{value}</option>
+                  ))}
+                </select>
+              </div>
+            </th>
+            <th>
+              Weight Category
+              <div className="filter-container">
+                <select
+                  value={filters.weightCategory}
+                  onChange={e => setFilters({ ...filters, weightCategory: e.target.value })}
+                >
+                  {uniqueCategories('weightCategory').map(value => (
+                    <option key={value} value={value}>{value}</option>
+                  ))}
+                </select>
+              </div>
+            </th>
+            <th>
+              Gender
+              <div className="filter-container">
+                <select
+                  value={filters.gender}
+                  onChange={e => setFilters({ ...filters, gender: e.target.value })}
+                >
+                  {uniqueCategories('gender').map(value => (
+                    <option key={value} value={value}>{value}</option>
+                  ))}
+                </select>
+              </div>
+            </th>
+            <th>
+              Kup Category
+              <div className="filter-container">
+                <select
+                  value={filters.kupCategory}
+                  onChange={e => setFilters({ ...filters, kupCategory: e.target.value })}
+                >
+                  {uniqueCategories('kupCategory').map(value => (
+                    <option key={value} value={value}>{value}</option>
+                  ))}
+                </select>
+              </div>
+            </th>
             <th>Combat Zone</th>
             <th>Action</th>
           </tr>
