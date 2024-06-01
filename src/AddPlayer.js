@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import AddPlayerForm from './AddPlayerForm';
-import ParticipantTable from './ParticipantTable';
 import { useNavigate } from 'react-router-dom';
 
 const AddPlayer = () => {

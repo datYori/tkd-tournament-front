@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-const ParticipantTable = ({ participants, onDelete, showDeleteButton = false, onUpdate }) => {
+const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpdate }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filters, setFilters] = useState({
     weightCategory: '',
@@ -274,4 +274,4 @@ const ParticipantTable = ({ participants, onDelete, showDeleteButton = false, on
   );
 };
 
-export default ParticipantTable;
+export default PlayersTable;

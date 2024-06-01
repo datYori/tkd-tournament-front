@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import ParticipantTable from './ParticipantTable';
+import PlayersTable from './PlayersTable';
 
-const TournamentView = () => {
+const PlayersView = () => {
   const [participants, setParticipants] = useState([]);
 
   const fetchParticipants = () => {
@@ -49,7 +49,7 @@ const TournamentView = () => {
     <div>
       <h2 className="h2-heading">Tournament View</h2>
       <h3 className="h2-heading">Participants</h3>
-      <ParticipantTable
+      <PlayersTable
         participants={participants}
         showDeleteButton={true}
         onDelete={handleDelete}
@@ -59,4 +59,4 @@ const TournamentView = () => {
   );
 };
 
-export default TournamentView;
+export default PlayersView;
