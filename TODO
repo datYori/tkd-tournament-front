@@ -1,5 +1,4 @@
 - do not allow 2 times the same exact entry
 - do not allow the same name in 2 weightCategory an/or age categories
 - constraint age, weight, kup, gender categories to specific values ( from both back and front)
-- add participant import from CSV (file)
-- add participant import from free multiline text feild in csv format
+- fix bulk and csv upload ( the forms are able to post but the result is empty entries in the view table)
