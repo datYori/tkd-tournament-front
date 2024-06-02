@@ -131,3 +131,58 @@ button:disabled {
 .filter-container {
   margin-top: 5px;
 }
+
+/* New styles for Add Participant form */
+.add-participant-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.add-participant-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.submit-button {
+  background-color: #0b0c0c;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition-duration: 0.4s;
+}
+
+.submit-button:hover {
+  background-color: white;
+  color: black;
+}

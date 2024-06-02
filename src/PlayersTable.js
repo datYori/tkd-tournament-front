@@ -196,7 +196,7 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
         </thead>
         <tbody>
           {filteredParticipants.map((participant, index) => (
-            <tr key={index}>
+            <tr key={participant._id || index}>
               <td>{participant.name}</td>
               <td>{participant.ageCategory}</td>
               <td>{participant.weightCategory}</td>

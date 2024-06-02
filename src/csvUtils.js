@@ -9,7 +9,7 @@ export const trimAndNormalize = (data) => {
     "Weight Category": row["Weight Category"] ? row["Weight Category"].trim() : '',
     Gender: row.Gender ? row.Gender.trim() : '',
     "Kup Category": row["Kup Category"] ? row["Kup Category"].trim() : '',
-  }));
+  })).filter(row => Object.values(row).some(val => val));
 };
 
 export const formatData = (data) => {

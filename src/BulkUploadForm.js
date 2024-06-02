@@ -47,7 +47,10 @@ const BulkUploadForm = ({ onParticipantAdded }) => {
         })
         .then(data => {
           console.log('Success:', data);
-          onParticipantAdded(); // Trigger the refresh of the participant list
+          if (typeof onParticipantAdded === 'function') {
+            onParticipantAdded(); // Trigger the refresh of the participant list
+          }
+          setParticipants([]); // Clear participants after successful upload
         })
         .catch((error) => {
           console.error('Error:', error);
