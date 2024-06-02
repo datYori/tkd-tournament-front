@@ -25,13 +25,13 @@ const AddPlayer = () => {
     fetch(`http://localhost:3000/api/participants/${id}`, {
       method: 'DELETE',
     })
-    .then(response => response.json())
-    .then(() => {
-      fetchParticipants(); // Refresh the list after deleting
-    })
-    .catch(error => {
-      console.error('Error deleting participant:', error);
-    });
+      .then(response => response.json())
+      .then(() => {
+        fetchParticipants(); // Refresh the list after deleting
+      })
+      .catch(error => {
+        console.error('Error deleting participant:', error);
+      });
   };
 
   return (
