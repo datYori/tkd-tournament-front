@@ -5,6 +5,8 @@ import AddPlayer from './AddPlayer';
 import PlayersView from './PlayersView';
 import TournamentBracketView from './TournamentBracketView';
 import GenerateTournament from './GenerateTournament';
+import BulkUploadForm from './BulkUploadForm';
+import ManualCSVInput from './ManualCSVInput';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             <Route path="/participants" element={<PlayersView />} />
             <Route path="/generate-tournament" element={<GenerateTournament />} />
             <Route path="/tournament-bracket/:tournamentId" element={<TournamentBracketView />} />
+            <Route path="/bulk-upload" element={<BulkUploadForm />} />
+            <Route path="/manual-csv-input" element={<ManualCSVInput />} />
             {/* Add more routes as needed */}
           </Routes>
         </main>

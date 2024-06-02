@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import BulkAddPlayerForm from './BulkAddPlayerForm';
 
 const AddPlayerForm = ({ onParticipantAdded }) => {
   const [name, setName] = useState('');
@@ -7,7 +6,6 @@ const AddPlayerForm = ({ onParticipantAdded }) => {
   const [ageCategory, setAgeCategory] = useState('');
   const [kupCategory, setKupCategory] = useState('');
   const [gender, setGender] = useState('');
-  const [bulkAdd, setBulkAdd] = useState(false);
 
   const weightCategories = [
     '-20kg', '-22kg', '-24kg', '-26kg', '-28kg', '-29kg', '-30kg', '-32kg', '-33kg', '-35kg', '-37kg', '-38kg', '-41kg',
@@ -52,61 +50,54 @@ const AddPlayerForm = ({ onParticipantAdded }) => {
 
   return (
     <div>
-      <button onClick={() => setBulkAdd(!bulkAdd)}>
-        {bulkAdd ? 'Switch to Single Add' : 'Switch to Bulk Add'}
-      </button>
-      {bulkAdd ? (
-        <BulkAddPlayerForm onParticipantAdded={onParticipantAdded} />
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Age Category:
-            <select value={ageCategory} onChange={(e) => setAgeCategory(e.target.value)} required>
-              <option value="" disabled>Select Age Category</option>
-              {ageCategories.map(age => (
-                <option key={age} value={age}>{age}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Weight Category:
-            <select value={weightCategory} onChange={(e) => setWeightCategory(e.target.value)} required>
-              <option value="" disabled>Select Weight Category</option>
-              {weightCategories.map(weight => (
-                <option key={weight} value={weight}>{weight}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Gender:
-            <select value={gender} onChange={(e) => setGender(e.target.value)} required>
-              <option value="" disabled>Select Gender</option>
-              {genders.map(g => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Kup Category:
-            <select value={kupCategory} onChange={(e) => setKupCategory(e.target.value)} required>
-              <option value="" disabled>Select Kup Category</option>
-              {kupCategories.map(kup => (
-                <option key={kup} value={kup}>{kup}</option>
-              ))}
-            </select>
-          </label>
-          <button type="submit">Add Participant</button>
-        </form>
-      )}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Age Category:
+          <select value={ageCategory} onChange={(e) => setAgeCategory(e.target.value)} required>
+            <option value="" disabled>Select Age Category</option>
+            {ageCategories.map(age => (
+              <option key={age} value={age}>{age}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Weight Category:
+          <select value={weightCategory} onChange={(e) => setWeightCategory(e.target.value)} required>
+            <option value="" disabled>Select Weight Category</option>
+            {weightCategories.map(weight => (
+              <option key={weight} value={weight}>{weight}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Gender:
+          <select value={gender} onChange={(e) => setGender(e.target.value)} required>
+            <option value="" disabled>Select Gender</option>
+            {genders.map(g => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Kup Category:
+          <select value={kupCategory} onChange={(e) => setKupCategory(e.target.value)} required>
+            <option value="" disabled>Select Kup Category</option>
+            {kupCategories.map(kup => (
+              <option key={kup} value={kup}>{kup}</option>
+            ))}
+          </select>
+        </label>
+        <button type="submit">Add Participant</button>
+      </form>
     </div>
   );
 };

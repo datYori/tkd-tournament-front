@@ -21,22 +21,11 @@ const AddPlayer = () => {
     fetchParticipants();
   }, []);
 
-  const handleDelete = (id) => {
-    fetch(`http://localhost:3000/api/participants/${id}`, {
-      method: 'DELETE',
-    })
-      .then(response => response.json())
-      .then(() => {
-        fetchParticipants(); // Refresh the list after deleting
-      })
-      .catch(error => {
-        console.error('Error deleting participant:', error);
-      });
-  };
-
   return (
     <div>
       <h2>Add Participant</h2>
+      <button onClick={() => navigate('/bulk-upload')}>Bulk Upload</button>
+      <button onClick={() => navigate('/manual-csv-input')}>Manual CSV Input</button>
       <AddPlayerForm onParticipantAdded={fetchParticipants} />
     </div>
   );
