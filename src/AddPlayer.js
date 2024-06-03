@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css'; // Ensure you import the CSS file
+import apiUrl from './config';
 
 const AddPlayer = () => {
   const [participants, setParticipants] = useState([]);
@@ -13,7 +14,7 @@ const AddPlayer = () => {
   const navigate = useNavigate();
 
   const fetchParticipants = () => {
-    fetch('http://localhost:3000/api/participants')
+    fetch(`${apiUrl}/api/participants`)
       .then(response => response.json())
       .then(data => {
         setParticipants(data);
@@ -30,7 +31,7 @@ const AddPlayer = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch('http://localhost:3000/api/participants', {
+    fetch(`${apiUrl}/api/participants`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

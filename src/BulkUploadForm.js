@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { parseCSV } from './csvUtils';
+import apiUrl from './config';
 
 const BulkUploadForm = ({ onParticipantAdded }) => {
   const [file, setFile] = useState(null);
@@ -32,7 +33,7 @@ const BulkUploadForm = ({ onParticipantAdded }) => {
   const handleUploadSubmit = (e) => {
     e.preventDefault();
     if (fileValid) {
-      fetch('http://localhost:3000/api/participants/bulk', {
+      fetch(`${apiUrl}/api/participants/bulk`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

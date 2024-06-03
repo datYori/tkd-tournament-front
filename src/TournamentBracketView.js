@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TournamentBracket from 'react-svg-tournament-bracket';
+import apiUrl from './config';
 
 const TournamentBracketView = () => {
   const { tournamentId } = useParams();
@@ -12,7 +13,7 @@ const TournamentBracketView = () => {
   useEffect(() => {
     const fetchTournament = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/tournaments/${tournamentId}`);
+        const response = await fetch(`${apiUrl}/api/tournaments/${tournamentId}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -57,7 +58,7 @@ const TournamentBracketView = () => {
       });
 
       // Send update to the backend
-      const response = await fetch(`http://localhost:3000/api/tournaments/${tournamentId}`, {
+      const response = await fetch(`${apiUrl}/api/tournaments/${tournamentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

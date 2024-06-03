@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PlayersTable from './PlayersTable';
+import apiUrl from './config';
 
 const PlayersView = () => {
   const [participants, setParticipants] = useState([]);
 
   const fetchParticipants = () => {
-    fetch('http://localhost:3000/api/participants')
+    fetch(`${apiUrl}/api/participants`)
       .then(response => response.json())
       .then(data => setParticipants(data))
       .catch(error => console.error('Error fetching participants:', error));
@@ -16,7 +17,7 @@ const PlayersView = () => {
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:3000/api/participants/${id}`, {
+    fetch(`${apiUrl}/api/participants/${id}`, {
       method: 'DELETE',
     })
     .then(response => response.json())
@@ -29,7 +30,7 @@ const PlayersView = () => {
   };
 
   const handleUpdate = (id, updatedData) => {
-    fetch(`http://localhost:3000/api/participants/${id}`, {
+    fetch(`${apiUrl}/api/participants/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

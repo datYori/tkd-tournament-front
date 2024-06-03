@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
+import apiUrl from './config';
 
 const GenerateTournament = () => {
   const [participants, setParticipants] = useState([]);
@@ -14,14 +15,14 @@ const GenerateTournament = () => {
   const [combatZones, setCombatZones] = useState({});
 
   const fetchParticipants = () => {
-    fetch('http://localhost:3000/api/participants')
+    fetch(`${apiUrl}/api/participants`)
       .then(response => response.json())
       .then(data => setParticipants(data))
       .catch(error => console.error('Error fetching participants:', error));
   };
 
   const fetchTournaments = () => {
-    fetch('http://localhost:3000/api/tournaments')
+    fetch(`${apiUrl}/api/tournaments`)
       .then(response => response.json())
       .then(data => setTournaments(data))
       .catch(error => console.error('Error fetching tournaments:', error));
@@ -37,7 +38,7 @@ const GenerateTournament = () => {
       alert('Please select a combat zone');
       return;
     }
-    fetch('http://localhost:3000/api/tournaments', {
+    fetch(`${apiUrl}/api/tournaments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ weightCategory, ageCategory, gender, kupCategory, combatZone })
@@ -55,7 +56,7 @@ const GenerateTournament = () => {
   const handleDeleteTournament = (id) => {
     if (!window.confirm('Are you sure you want to delete this tournament?')) return;
 
-    fetch(`http://localhost:3000/api/tournaments/${id}`, {
+    fetch(`${apiUrl}/api/tournaments/${id}`, {
       method: 'DELETE',
     })
     .then(response => {
