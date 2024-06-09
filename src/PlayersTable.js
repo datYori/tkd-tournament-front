@@ -41,6 +41,10 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     return filtered;
   }, [sortedParticipants, filters]);
 
+  useEffect(() => {
+    onFilteredCountChange(filteredParticipants.length);
+  }, [filteredParticipants]);
+
   const requestSort = key => {
     let direction = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
@@ -90,10 +94,6 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     };
     return categories;
   }, [participants]);
-
-  useEffect(() => {
-    onFilteredCountChange(filteredParticipants.length);
-  }, [filteredParticipants]);
 
   return (
     <div>
@@ -227,92 +227,83 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
           </tr>
         </thead>
         <tbody>
-          {filteredParticipants.map((participant, index) => (
-            <tr key={participant._id || index}>
-              <td>{participant.name}</td>
-              <td>{participant.ageCategory}</td>
-              <td>{participant.weightCategory}</td>
-              <td>{participant.gender}</td>
-              <td>{participant.kupCategory}</td>
-              <td>{participant.team}</td>
-              {showDeleteButton && (
-                <td>
-                  <button onClick={() => onDelete(participant._id)}>Delete</button>
-                  <button onClick={() => startEditing(participant)}>Edit</button>
-                </td>
+          {filteredParticipants.map((participant) => (
+            <tr key={participant._id}>
+              {editingParticipant === participant._id ? (
+                <>
+                  <td>
+                    <input
+                      type="text"
+                      name="name"
+                      value={editFormData.name}
+                      onChange={handleEditFormChange}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="ageCategory"
+                      value={editFormData.ageCategory}
+                      onChange={handleEditFormChange}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="weightCategory"
+                      value={editFormData.weightCategory}
+                      onChange={handleEditFormChange}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="gender"
+                      value={editFormData.gender}
+                      onChange={handleEditFormChange}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="kupCategory"
+                      value={editFormData.kupCategory}
+                      onChange={handleEditFormChange}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      name="team"
+                      value={editFormData.team}
+                      onChange={handleEditFormChange}
+                    />
+                  </td>
+                  <td>
+                    <button onClick={handleEditFormSubmit}>Save</button>
+                    <button onClick={handleCancelEdit}>Cancel</button>
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td>{participant.name}</td>
+                  <td>{participant.ageCategory}</td>
+                  <td>{participant.weightCategory}</td>
+                  <td>{participant.gender}</td>
+                  <td>{participant.kupCategory}</td>
+                  <td>{participant.team}</td>
+                  {showDeleteButton && (
+                    <td>
+                      <button onClick={() => startEditing(participant)}>Edit</button>
+                      <button onClick={() => onDelete(participant._id)}>Delete</button>
+                    </td>
+                  )}
+                </>
               )}
             </tr>
           ))}
         </tbody>
       </table>
-
-      {editingParticipant && (
-        <form onSubmit={handleEditFormSubmit}>
-          <h3>Edit Participant</h3>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={editFormData.name}
-              onChange={handleEditFormChange}
-              required
-            />
-          </label>
-          <label>
-            Age Category:
-            <input
-              type="text"
-              name="ageCategory"
-              value={editFormData.ageCategory}
-              onChange={handleEditFormChange}
-              required
-            />
-          </label>
-          <label>
-            Weight Category:
-            <input
-              type="text"
-              name="weightCategory"
-              value={editFormData.weightCategory}
-              onChange={handleEditFormChange}
-              required
-            />
-          </label>
-          <label>
-            Gender:
-            <input
-              type="text"
-              name="gender"
-              value={editFormData.gender}
-              onChange={handleEditFormChange}
-              required
-            />
-          </label>
-          <label>
-            Kup Category:
-            <input
-              type="text"
-              name="kupCategory"
-              value={editFormData.kupCategory}
-              onChange={handleEditFormChange}
-              required
-            />
-          </label>
-          <label>
-            Team:
-            <input
-              type="text"
-              name="team"
-              value={editFormData.team}
-              onChange={handleEditFormChange}
-              required
-            />
-          </label>
-          <button type="submit">Save</button>
-          <button type="button" onClick={handleCancelEdit}>Cancel</button>
-        </form>
-      )}
     </div>
   );
 };
