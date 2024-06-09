@@ -7,7 +7,8 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     ageCategory: '',
     gender: '',
     kupCategory: '',
-    name: ''
+    name: '',
+    team: '' // Added team filter
   });
   const [editingParticipant, setEditingParticipant] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -15,7 +16,8 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     weightCategory: '',
     ageCategory: '',
     kupCategory: '',
-    gender: ''
+    gender: '',
+    team: '' // Added team field
   });
 
   const sortedParticipants = useMemo(() => {
@@ -31,7 +33,8 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
              (filters.ageCategory ? participant.ageCategory === filters.ageCategory : true) &&
              (filters.gender ? participant.gender === filters.gender : true) &&
              (filters.kupCategory ? participant.kupCategory === filters.kupCategory : true) &&
-             (filters.name ? participant.name.toLowerCase().includes(filters.name.toLowerCase()) : true);
+             (filters.name ? participant.name.toLowerCase().includes(filters.name.toLowerCase()) : true) &&
+             (filters.team ? participant.team === filters.team : true); // Updated team filter
     });
   }, [sortedParticipants, filters]);
 
@@ -79,7 +82,8 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
       weightCategories: [...new Set(participants.map(p => p.weightCategory))],
       ageCategories: [...new Set(participants.map(p => p.ageCategory))],
       genders: [...new Set(participants.map(p => p.gender))],
-      kupCategories: [...new Set(participants.map(p => p.kupCategory))]
+      kupCategories: [...new Set(participants.map(p => p.kupCategory))],
+      teams: [...new Set(participants.map(p => p.team))], // Added unique teams
     };
     return categories;
   }, [participants]);
@@ -191,6 +195,27 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
                 </span>
               </div>
             </th>
+            <th>
+              <div className={`th-sortable ${getClassNamesFor('team')}`}>
+                <span className="column-title">Team</span>
+                <select
+                  value={filters.team}
+                  onChange={e => handleFilterChange(e, 'team')}
+                  className="filter-select"
+                >
+                  <option value="">All</option>
+                  {uniqueCategories.teams.map(team => (
+                    <option key={team} value={team}>{team}</option>
+                  ))}
+                </select>
+                <span
+                  className="sort-arrow"
+                  onClick={() => requestSort('team')}
+                >
+                  {getClassNamesFor('team') === 'ascending' ? '▲' : '▼'}
+                </span>
+              </div>
+            </th>
             {showDeleteButton && <th>Actions</th>}
           </tr>
         </thead>
@@ -202,6 +227,7 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
               <td>{participant.weightCategory}</td>
               <td>{participant.gender}</td>
               <td>{participant.kupCategory}</td>
+              <td>{participant.team}</td>
               {showDeleteButton && (
                 <td>
                   <button onClick={() => onDelete(participant._id)}>Delete</button>
@@ -262,6 +288,16 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
               type="text"
               name="kupCategory"
               value={editFormData.kupCategory}
+              onChange={handleEditFormChange}
+              required
+            />
+          </label>
+          <label>
+            Team:
+            <input
+              type="text"
+              name="team"
+              value={editFormData.team}
               onChange={handleEditFormChange}
               required
             />

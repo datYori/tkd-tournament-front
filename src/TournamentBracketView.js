@@ -44,7 +44,7 @@ const TournamentBracketView = () => {
       }
 
       const updatedTournament = await response.json();
-      setTournament(updatedTournament); // Update state with new tournament data
+      setTournament(updatedTournament);
     } catch (error) {
       console.error('Error updating tournament:', error);
       setError(error.message);

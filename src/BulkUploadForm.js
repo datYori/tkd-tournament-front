@@ -62,8 +62,8 @@ const BulkUploadForm = ({ onParticipantAdded }) => {
   return (
     <div>
       <h3>Bulk Add Participants</h3>
-      <p>Expected CSV Format: Name,Age Category,Weight Category,Gender,Kup Category</p>
-      <p>Example: John Doe,Senior,+87kg,M,B</p>
+      <p>Expected CSV Format: Name,Age Category,Weight Category,Gender,Kup Category,Team</p>
+      <p>Example: John Doe,Senior,+87kg,M,B,Team A</p>
       <div>
         <h4>Upload CSV File</h4>
         <form onSubmit={handleFileSubmit}>
@@ -98,6 +98,7 @@ const BulkUploadForm = ({ onParticipantAdded }) => {
                 <th>Weight Category</th>
                 <th>Gender</th>
                 <th>Kup Category</th>
+                <th>Team</th> {/* Added team column */}
               </tr>
             </thead>
             <tbody>
@@ -108,6 +109,7 @@ const BulkUploadForm = ({ onParticipantAdded }) => {
                   <td>{participant["Weight Category"]}</td>
                   <td>{participant.Gender}</td>
                   <td>{participant["Kup Category"]}</td>
+                  <td>{participant.Team}</td> {/* Added team field */}
                 </tr>
               ))}
             </tbody>

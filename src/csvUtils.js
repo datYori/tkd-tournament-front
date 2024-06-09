@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 
-export const expectedHeaders = ['Name', 'Age Category', 'Weight Category', 'Gender', 'Kup Category'];
+export const expectedHeaders = ['Name', 'Age Category', 'Weight Category', 'Gender', 'Kup Category', 'Team'];
 
 export const trimAndNormalize = (data) => {
   return data.map(row => ({
@@ -9,6 +9,7 @@ export const trimAndNormalize = (data) => {
     "Weight Category": row["Weight Category"] ? row["Weight Category"].trim() : '',
     Gender: row.Gender ? row.Gender.trim() : '',
     "Kup Category": row["Kup Category"] ? row["Kup Category"].trim() : '',
+    Team: row.Team ? row.Team.trim() : '',
   })).filter(row => Object.values(row).some(val => val));
 };
 
@@ -19,25 +20,24 @@ export const formatData = (data) => {
     "Weight Category": row["Weight Category"],
     Gender: row.Gender.toUpperCase(),
     "Kup Category": row["Kup Category"].toUpperCase(),
+    Team: row.Team,
   }));
 };
 
 export const validateData = (data) => {
-  const nameRegex = /^[a-zA-Z\s]+$/;
   const weightCategoryRegex = /^[+-]\d{2}kg$/i;
-  const ageCategoryRegex = /^(Benjamins|Minims|Cadette|Junior|Senior)$/i;
   const kupCategoryRegex = /^[A-B]$/i;
-  const genderRegex = /^[MF]$/i;
 
   const errors = [];
 
   const valid = data.map((row, index) => {
     const rowErrors = [];
-    if (!nameRegex.test(row.Name)) rowErrors.push("The name should contain only letters and spaces.");
+    if (!row.Name) rowErrors.push("The name field should not be empty.");
     if (!weightCategoryRegex.test(row["Weight Category"])) rowErrors.push("The weight category should be in the form '+/-XXkg' (e.g., -20kg, +87kg).");
-    if (!ageCategoryRegex.test(row["Age Category"])) rowErrors.push("The age category should be one of: Benjamins, Minims, Cadette, Junior, Senior.");
+    if (!row["Age Category"]) rowErrors.push("The age category should be one of: Benjamins, Minims, Cadette, Junior, Senior.");
     if (!kupCategoryRegex.test(row["Kup Category"])) rowErrors.push("The kup category should be either 'A' or 'B'.");
-    if (!genderRegex.test(row.Gender)) rowErrors.push("The gender should be 'M' for male or 'F' for female.");
+    if (!row.Gender) rowErrors.push("The gender should be 'M' for male or 'F' for female.");
+    if (!row.Team) rowErrors.push("The team field should not be empty.");
 
     if (rowErrors.length > 0) {
       errors.push({ line: index + 2, errors: rowErrors }); // +2 for header and 1-based index

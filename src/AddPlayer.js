@@ -10,6 +10,7 @@ const AddPlayer = () => {
   const [ageCategory, setAgeCategory] = useState('');
   const [kupCategory, setKupCategory] = useState('');
   const [gender, setGender] = useState('');
+  const [team, setTeam] = useState('');
 
   const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ const AddPlayer = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, ageCategory, weightCategory, gender, kupCategory }),
+      body: JSON.stringify({ name, ageCategory, weightCategory, gender, kupCategory, team }), // Added team field
     })
       .then(response => {
         if (!response.ok) {
@@ -51,6 +52,7 @@ const AddPlayer = () => {
         setAgeCategory('');
         setKupCategory('');
         setGender('');
+        setTeam('');
         fetchParticipants(); // Trigger the refresh of the participant list
       })
       .catch((error) => {
@@ -127,6 +129,17 @@ const AddPlayer = () => {
                   <option key={kup} value={kup}>{kup}</option>
                 ))}
               </select>
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Team:
+              <input
+                type="text"
+                value={team}
+                onChange={(e) => setTeam(e.target.value)}
+                required
+              />
             </label>
           </div>
           <button type="submit" className="submit-button">Add Participant</button>
