@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
-const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpdate }) => {
+const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpdate, onFilteredCountChange }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filters, setFilters] = useState({
     weightCategory: '',
@@ -8,7 +8,7 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     gender: '',
     kupCategory: '',
     name: '',
-    team: '' // Added team filter
+    team: ''
   });
   const [editingParticipant, setEditingParticipant] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -17,7 +17,7 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     ageCategory: '',
     kupCategory: '',
     gender: '',
-    team: '' // Added team field
+    team: ''
   });
 
   const sortedParticipants = useMemo(() => {
@@ -28,14 +28,17 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
   }, [participants, sortConfig]);
 
   const filteredParticipants = useMemo(() => {
-    return sortedParticipants.filter(participant => {
+    const filtered = sortedParticipants.filter(participant => {
       return (filters.weightCategory ? participant.weightCategory === filters.weightCategory : true) &&
              (filters.ageCategory ? participant.ageCategory === filters.ageCategory : true) &&
              (filters.gender ? participant.gender === filters.gender : true) &&
              (filters.kupCategory ? participant.kupCategory === filters.kupCategory : true) &&
              (filters.name ? participant.name.toLowerCase().includes(filters.name.toLowerCase()) : true) &&
-             (filters.team ? participant.team === filters.team : true); // Updated team filter
+             (filters.team ? participant.team === filters.team : true);
     });
+
+    onFilteredCountChange(filtered.length); // Update filtered count
+    return filtered;
   }, [sortedParticipants, filters]);
 
   const requestSort = key => {
@@ -83,10 +86,14 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
       ageCategories: [...new Set(participants.map(p => p.ageCategory))],
       genders: [...new Set(participants.map(p => p.gender))],
       kupCategories: [...new Set(participants.map(p => p.kupCategory))],
-      teams: [...new Set(participants.map(p => p.team))], // Added unique teams
+      teams: [...new Set(participants.map(p => p.team))]
     };
     return categories;
   }, [participants]);
+
+  useEffect(() => {
+    onFilteredCountChange(filteredParticipants.length);
+  }, [filteredParticipants]);
 
   return (
     <div>

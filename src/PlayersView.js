@@ -4,6 +4,7 @@ import apiUrl from './config';
 
 const PlayersView = () => {
   const [participants, setParticipants] = useState([]);
+  const [filteredCount, setFilteredCount] = useState(0);
 
   const fetchParticipants = () => {
     fetch(`${apiUrl}/api/participants`)
@@ -50,11 +51,14 @@ const PlayersView = () => {
     <div>
       <h2 className="h2-heading">Tournament View</h2>
       <h3 className="h2-heading">Participants</h3>
+      <h4 className="h4-heading">(Total: {participants.length})</h4>
+      <h4 className="h4-heading">(Selected: {filteredCount})</h4>
       <PlayersTable
         participants={participants}
         showDeleteButton={true}
         onDelete={handleDelete}
         onUpdate={handleUpdate}
+        onFilteredCountChange={setFilteredCount} // Pass the function to update the filtered count
       />
     </div>
   );
