@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 import apiUrl from './config';
@@ -13,6 +13,7 @@ const GenerateTournament = () => {
     kupCategory: 'All'
   });
   const [combatZones, setCombatZones] = useState({});
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
   const fetchParticipants = () => {
     fetch(`${apiUrl}/api/participants`)
@@ -129,6 +130,45 @@ const GenerateTournament = () => {
     return tournament ? tournament.combatZone : null;
   };
 
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const ageCategoryOrder = {
+    Poussin: 1,
+    Benjamin: 2,
+    Minime: 3,
+    Cadet: 4,
+    Junior: 5,
+    Senior: 6
+  };
+
+  const sortedCombinations = useMemo(() => {
+    const sorted = [...getFilteredCombinations()];
+    if (sortConfig.key) {
+      sorted.sort((a, b) => {
+        if (sortConfig.key === 'ageCategory') {
+          return sortConfig.direction === 'ascending'
+            ? ageCategoryOrder[a.ageCategory] - ageCategoryOrder[b.ageCategory]
+            : ageCategoryOrder[b.ageCategory] - ageCategoryOrder[a.ageCategory];
+        } else {
+          if (a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? -1 : 1;
+          }
+          if (a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === 'ascending' ? 1 : -1;
+          }
+          return 0;
+        }
+      });
+    }
+    return sorted;
+  }, [sortConfig, participants, filters]);
+
   return (
     <div>
       <h3>Generate Brackets</h3>
@@ -136,66 +176,18 @@ const GenerateTournament = () => {
       <table className="participant-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>
-              Age Category
-              <div className="filter-container">
-                <select
-                  value={filters.ageCategory}
-                  onChange={e => setFilters({ ...filters, ageCategory: e.target.value })}
-                >
-                  {uniqueCategories('ageCategory').map(value => (
-                    <option key={value} value={value}>{value}</option>
-                  ))}
-                </select>
-              </div>
-            </th>
-            <th>
-              Weight Category
-              <div className="filter-container">
-                <select
-                  value={filters.weightCategory}
-                  onChange={e => setFilters({ ...filters, weightCategory: e.target.value })}
-                >
-                  {uniqueCategories('weightCategory').map(value => (
-                    <option key={value} value={value}>{value}</option>
-                  ))}
-                </select>
-              </div>
-            </th>
-            <th>
-              Gender
-              <div className="filter-container">
-                <select
-                  value={filters.gender}
-                  onChange={e => setFilters({ ...filters, gender: e.target.value })}
-                >
-                  {uniqueCategories('gender').map(value => (
-                    <option key={value} value={value}>{value}</option>
-                  ))}
-                </select>
-              </div>
-            </th>
-            <th>
-              Kup Category
-              <div className="filter-container">
-                <select
-                  value={filters.kupCategory}
-                  onChange={e => setFilters({ ...filters, kupCategory: e.target.value })}
-                >
-                  {uniqueCategories('kupCategory').map(value => (
-                    <option key={value} value={value}>{value}</option>
-                  ))}
-                </select>
-              </div>
-            </th>
-            <th>Number of Participants</th>
+            <th onClick={() => requestSort('tournamentId')}>ID</th>
+            <th onClick={() => requestSort('ageCategory')}>Age Category</th>
+            <th onClick={() => requestSort('weightCategory')}>Weight Category</th>
+            <th onClick={() => requestSort('gender')}>Gender</th>
+            <th onClick={() => requestSort('kupCategory')}>Kup Category</th>
+            <th onClick={() => requestSort('count')}>Number of Participants</th>
             <th>Combat Zone</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {getFilteredCombinations().map((combination, index) => {
+          {sortedCombinations.map((combination, index) => {
             const tournamentId = getTournamentId(combination);
             const combatZone = getCombatZone(combination);
             const key = `${combination.weightCategory}/${combination.ageCategory}/${combination.gender}/${combination.kupCategory}`;
