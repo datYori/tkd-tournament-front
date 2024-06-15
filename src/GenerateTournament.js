@@ -74,9 +74,11 @@ const GenerateTournament = () => {
           weightCategory: participant.weightCategory,
           ageCategory: participant.ageCategory,
           gender: participant.gender,
-          kupCategory: participant.kupCategory
+          kupCategory: participant.kupCategory,
+          count: 0
         };
       }
+      acc[key].count += 1;
       return acc;
     }, {});
 
@@ -187,6 +189,7 @@ const GenerateTournament = () => {
                 </select>
               </div>
             </th>
+            <th>Number of Participants</th>
             <th>Combat Zone</th>
             <th>Action</th>
           </tr>
@@ -207,6 +210,7 @@ const GenerateTournament = () => {
                 <td>{combination.weightCategory}</td>
                 <td>{combination.gender}</td>
                 <td>{combination.kupCategory}</td>
+                <td>{combination.count}</td>
                 <td>
                   {tournamentId ? (
                     combatZone
