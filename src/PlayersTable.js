@@ -20,10 +20,25 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     team: ''
   });
 
+  const ageCategoryOrder = {
+    Poussin: 1,
+    Benjamin: 2,
+    Minime: 3,
+    Cadet: 4,
+    Junior: 5,
+    Senior: 6
+  };
+
   const sortedParticipants = useMemo(() => {
     return [...participants].sort((a, b) => {
       if (!sortConfig.key || a[sortConfig.key] === b[sortConfig.key]) return 0;
-      return (a[sortConfig.key] < b[sortConfig.key]) === (sortConfig.direction === 'ascending') ? -1 : 1;
+      if (sortConfig.key === 'ageCategory') {
+        return sortConfig.direction === 'ascending'
+          ? ageCategoryOrder[a.ageCategory] - ageCategoryOrder[b.ageCategory]
+          : ageCategoryOrder[b.ageCategory] - ageCategoryOrder[a.ageCategory];
+      } else {
+        return (a[sortConfig.key] < b[sortConfig.key]) === (sortConfig.direction === 'ascending') ? -1 : 1;
+      }
     });
   }, [participants, sortConfig]);
 
