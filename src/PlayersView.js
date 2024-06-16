@@ -102,7 +102,7 @@ const PlayersView = () => {
       <h3 className="h2-heading">Participants</h3>
       <h4 className="h4-heading">(Total: {participants.length})</h4>
       <h4 className="h4-heading">(Selected: {filteredCount})</h4>
-      <div>
+      <div className="participant-table-container">
         <table className="participant-table">
           <thead>
             <tr>

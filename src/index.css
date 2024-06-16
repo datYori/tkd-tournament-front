@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Ensure the main container takes full height for flexbox */
+#root {
+  height: 100%;
+}
+
+/* General responsive styles */
+* {
+  box-sizing: border-box;
+}

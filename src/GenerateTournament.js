@@ -130,47 +130,48 @@ const GenerateTournament = () => {
   return (
     <div>
       <h3>Generate Brackets</h3>
-
-      <table className="participant-table">
-        <thead>
-          <tr>
-            <th onClick={() => requestSort('tournamentId')}>ID</th>
-            <th onClick={() => requestSort('ageCategory')}>Age Category</th>
-            <th onClick={() => requestSort('weightCategory')}>Weight Category</th>
-            <th onClick={() => requestSort('gender')}>Gender</th>
-            <th onClick={() => requestSort('kupCategory')}>Kup Category</th>
-            <th onClick={() => requestSort('count')}>Number of Participants</th>
-            <th>Combat Zone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedCombinations.map((combination, index) => {
-            const tournamentId = getTournamentId(combination);
-            const combatZone = getCombatZone(combination);
-            return (
-              <tr key={index} style={{ backgroundColor: tournamentId ? 'green' : 'red' }}>
-                <td>
-                  {tournamentId ? (
-                    <Link
-                      to={`/tournament-bracket/${tournamentId}`}
-                      className="tournament-link"
-                      title="View Tournament Bracket"
-                    >
-                      {tournamentId} <ExternalLinkIcon />
-                    </Link>
-                  ) : ''}
-                </td>
-                <td>{combination.ageCategory}</td>
-                <td>{combination.weightCategory}</td>
-                <td>{combination.gender}</td>
-                <td>{combination.kupCategory}</td>
-                <td>{combination.count}</td>
-                <td>{combatZone}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="participant-table-container">
+        <table className="participant-table">
+          <thead>
+            <tr>
+              <th onClick={() => requestSort('tournamentId')}>ID</th>
+              <th onClick={() => requestSort('ageCategory')}>Age Category</th>
+              <th onClick={() => requestSort('weightCategory')}>Weight Category</th>
+              <th onClick={() => requestSort('gender')}>Gender</th>
+              <th onClick={() => requestSort('kupCategory')}>Kup Category</th>
+              <th onClick={() => requestSort('count')}>Number of Participants</th>
+              <th>Combat Zone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedCombinations.map((combination, index) => {
+              const tournamentId = getTournamentId(combination);
+              const combatZone = getCombatZone(combination);
+              return (
+                <tr key={index} style={{ backgroundColor: tournamentId ? 'green' : 'red' }}>
+                  <td>
+                    {tournamentId ? (
+                      <Link
+                        to={`/tournament-bracket/${tournamentId}`}
+                        className="tournament-link"
+                        title="View Tournament Bracket"
+                      >
+                        {tournamentId} <ExternalLinkIcon />
+                      </Link>
+                    ) : ''}
+                  </td>
+                  <td>{combination.ageCategory}</td>
+                  <td>{combination.weightCategory}</td>
+                  <td>{combination.gender}</td>
+                  <td>{combination.kupCategory}</td>
+                  <td>{combination.count}</td>
+                  <td>{combatZone}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
