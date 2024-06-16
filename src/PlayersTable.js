@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 
-const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpdate, onFilteredCountChange }) => {
+const PlayersTable = ({ participants, onFilteredCountChange }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filters, setFilters] = useState({
     weightCategory: '',
@@ -8,15 +8,6 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
     gender: '',
     kupCategory: '',
     name: '',
-    team: ''
-  });
-  const [editingParticipant, setEditingParticipant] = useState(null);
-  const [editFormData, setEditFormData] = useState({
-    name: '',
-    weightCategory: '',
-    ageCategory: '',
-    kupCategory: '',
-    gender: '',
     team: ''
   });
 
@@ -77,26 +68,6 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
       ...prevFilters,
       [key]: e.target.value
     }));
-  };
-
-  const startEditing = (participant) => {
-    setEditingParticipant(participant._id);
-    setEditFormData(participant);
-  };
-
-  const handleEditFormChange = (e) => {
-    const { name, value } = e.target;
-    setEditFormData(prevData => ({ ...prevData, [name]: value }));
-  };
-
-  const handleEditFormSubmit = (e) => {
-    e.preventDefault();
-    onUpdate(editingParticipant, editFormData);
-    setEditingParticipant(null);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingParticipant(null);
   };
 
   const uniqueCategories = useMemo(() => {
@@ -238,83 +209,17 @@ const PlayersTable = ({ participants, onDelete, showDeleteButton = false, onUpda
                 </span>
               </div>
             </th>
-            {showDeleteButton && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
           {filteredParticipants.map((participant) => (
             <tr key={participant._id}>
-              {editingParticipant === participant._id ? (
-                <>
-                  <td>
-                    <input
-                      type="text"
-                      name="name"
-                      value={editFormData.name}
-                      onChange={handleEditFormChange}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      name="ageCategory"
-                      value={editFormData.ageCategory}
-                      onChange={handleEditFormChange}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      name="weightCategory"
-                      value={editFormData.weightCategory}
-                      onChange={handleEditFormChange}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      name="gender"
-                      value={editFormData.gender}
-                      onChange={handleEditFormChange}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      name="kupCategory"
-                      value={editFormData.kupCategory}
-                      onChange={handleEditFormChange}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      name="team"
-                      value={editFormData.team}
-                      onChange={handleEditFormChange}
-                    />
-                  </td>
-                  <td>
-                    <button onClick={handleEditFormSubmit}>Save</button>
-                    <button onClick={handleCancelEdit}>Cancel</button>
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td>{participant.name}</td>
-                  <td>{participant.ageCategory}</td>
-                  <td>{participant.weightCategory}</td>
-                  <td>{participant.gender}</td>
-                  <td>{participant.kupCategory}</td>
-                  <td>{participant.team}</td>
-                  {showDeleteButton && (
-                    <td>
-                      <button onClick={() => startEditing(participant)}>Edit</button>
-                      <button onClick={() => onDelete(participant._id)}>Delete</button>
-                    </td>
-                  )}
-                </>
-              )}
+              <td>{participant.name}</td>
+              <td>{participant.ageCategory}</td>
+              <td>{participant.weightCategory}</td>
+              <td>{participant.gender}</td>
+              <td>{participant.kupCategory}</td>
+              <td>{participant.team}</td>
             </tr>
           ))}
         </tbody>

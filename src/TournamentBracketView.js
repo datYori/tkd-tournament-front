@@ -28,29 +28,6 @@ const TournamentBracketView = () => {
     fetchTournament();
   }, [tournamentId]);
 
-  const handleSelectTeam = async (match, team) => {
-    try {
-      const winner = team === 'home' ? match.homeTeamName : match.awayTeamName;
-      const response = await fetch(`${apiUrl}/api/tournaments/${tournamentId}/matches/${match.matchNumber}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ winner }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update tournament');
-      }
-
-      const updatedTournament = await response.json();
-      setTournament(updatedTournament);
-    } catch (error) {
-      console.error('Error updating tournament:', error);
-      setError(error.message);
-    }
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -67,7 +44,7 @@ const TournamentBracketView = () => {
             <strong>Start Date: </strong>{new Date(tournament.startDate).toLocaleDateString()}
           </div>
           <h3>Matches</h3>
-          <TournamentBracket matches={tournament.matches} onSelectTeam={handleSelectTeam} />
+          <TournamentBracket matches={tournament.matches} />
         </>
       ) : <p>No tournament details available.</p>}
     </div>

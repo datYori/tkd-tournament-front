@@ -172,17 +172,26 @@ button:disabled {
   border: 1px solid #ddd;
 }
 
-.submit-button {
-  background-color: #0b0c0c;
-  color: white;
-  border: none;
-  padding: 10px;
+.tournament-link {
+  color: #1e90ff; /* Blue color for links */
+  text-decoration: underline;
   cursor: pointer;
-  border-radius: 5px;
-  transition-duration: 0.4s;
+  display: inline-flex;
+  align-items: center;
 }
 
-.submit-button:hover {
-  background-color: white;
-  color: black;
+.tournament-link:hover {
+  color: #104e8b; /* Darker blue on hover */
 }
+
+.external-link-icon {
+  margin-left: 5px;
+  width: 16px;
+  height: 16px;
+  fill: #1e90ff;
+}
+
+.tournament-link:hover .external-link-icon {
+  fill: #104e8b;
+}
+

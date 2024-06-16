@@ -17,36 +17,6 @@ const PlayersView = () => {
     fetchParticipants();
   }, []);
 
-  const handleDelete = (id) => {
-    fetch(`${apiUrl}/api/participants/${id}`, {
-      method: 'DELETE',
-    })
-    .then(response => response.json())
-    .then(() => {
-      fetchParticipants(); // Refresh the list after deleting
-    })
-    .catch(error => {
-      console.error('Error deleting participant:', error);
-    });
-  };
-
-  const handleUpdate = (id, updatedData) => {
-    fetch(`${apiUrl}/api/participants/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedData),
-    })
-    .then(response => response.json())
-    .then(() => {
-      fetchParticipants(); // Refresh the list after updating
-    })
-    .catch(error => {
-      console.error('Error updating participant:', error);
-    });
-  };
-
   return (
     <div>
       <h2 className="h2-heading">Tournament View</h2>
@@ -55,9 +25,6 @@ const PlayersView = () => {
       <h4 className="h4-heading">(Selected: {filteredCount})</h4>
       <PlayersTable
         participants={participants}
-        showDeleteButton={true}
-        onDelete={handleDelete}
-        onUpdate={handleUpdate}
         onFilteredCountChange={setFilteredCount} // Pass the function to update the filtered count
       />
     </div>

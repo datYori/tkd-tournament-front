@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 import apiUrl from './config';
+import ExternalLinkIcon from './ExternalLinkIcon'; // Import the ExternalLinkIcon component
 
 const GenerateTournament = () => {
   const [participants, setParticipants] = useState([]);
@@ -12,7 +13,6 @@ const GenerateTournament = () => {
     gender: 'All',
     kupCategory: 'All'
   });
-  const [combatZones, setCombatZones] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
   const fetchParticipants = () => {
@@ -33,39 +33,6 @@ const GenerateTournament = () => {
     fetchParticipants();
     fetchTournaments();
   }, []);
-
-  const handleGenerateBracket = (weightCategory, ageCategory, gender, kupCategory, combatZone) => {
-    if (!combatZone) {
-      alert('Please select a combat zone');
-      return;
-    }
-    fetch(`${apiUrl}/api/tournaments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ weightCategory, ageCategory, gender, kupCategory, combatZone })
-    })
-    .then(response => {
-      if (!response.ok) throw new Error('Failed to generate bracket');
-      return response.json();
-    })
-    .then(tournament => {
-      fetchTournaments();  // Refresh the tournament list
-    })
-    .catch(error => console.error('Error generating bracket:', error));
-  };
-
-  const handleDeleteTournament = (id) => {
-    if (!window.confirm('Are you sure you want to delete this tournament?')) return;
-
-    fetch(`${apiUrl}/api/tournaments/${id}`, {
-      method: 'DELETE',
-    })
-    .then(response => {
-      if (!response.ok) throw new Error('Failed to delete tournament');
-      fetchTournaments();  // Refresh the tournament list
-    })
-    .catch(error => console.error('Error deleting tournament:', error));
-  };
 
   const getUniqueCombinations = () => {
     const uniqueCombinations = participants.reduce((acc, participant) => {
@@ -101,15 +68,6 @@ const GenerateTournament = () => {
     return ['All', ...categories];
   };
 
-  const isTournamentGenerated = (combination) => {
-    return tournaments.some(tournament =>
-      tournament.weightCategory === combination.weightCategory &&
-      tournament.ageCategory === combination.ageCategory &&
-      tournament.gender === combination.gender &&
-      tournament.kupCategory === combination.kupCategory
-    );
-  };
-
   const getTournamentId = (combination) => {
     const tournament = tournaments.find(tournament =>
       tournament.weightCategory === combination.weightCategory &&
@@ -127,7 +85,7 @@ const GenerateTournament = () => {
       tournament.gender === combination.gender &&
       tournament.kupCategory === combination.kupCategory
     );
-    return tournament ? tournament.combatZone : null;
+    return tournament ? tournament.combatZone : '';
   };
 
   const requestSort = (key) => {
@@ -183,19 +141,23 @@ const GenerateTournament = () => {
             <th onClick={() => requestSort('kupCategory')}>Kup Category</th>
             <th onClick={() => requestSort('count')}>Number of Participants</th>
             <th>Combat Zone</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {sortedCombinations.map((combination, index) => {
             const tournamentId = getTournamentId(combination);
             const combatZone = getCombatZone(combination);
-            const key = `${combination.weightCategory}/${combination.ageCategory}/${combination.gender}/${combination.kupCategory}`;
             return (
               <tr key={index} style={{ backgroundColor: tournamentId ? 'green' : 'red' }}>
                 <td>
                   {tournamentId ? (
-                    <Link to={`/tournament-bracket/${tournamentId}`}>{tournamentId}</Link>
+                    <Link
+                      to={`/tournament-bracket/${tournamentId}`}
+                      className="tournament-link"
+                      title="View Tournament Bracket"
+                    >
+                      {tournamentId} <ExternalLinkIcon />
+                    </Link>
                   ) : ''}
                 </td>
                 <td>{combination.ageCategory}</td>
@@ -203,43 +165,7 @@ const GenerateTournament = () => {
                 <td>{combination.gender}</td>
                 <td>{combination.kupCategory}</td>
                 <td>{combination.count}</td>
-                <td>
-                  {tournamentId ? (
-                    combatZone
-                  ) : (
-                    <select
-                      value={combatZones[key] || ''}
-                      onChange={e => setCombatZones({ ...combatZones, [key]: e.target.value })}
-                    >
-                      <option value="" disabled>Select Combat Zone</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  )}
-                </td>
-                <td>
-                  {tournamentId ? (
-                    <>
-                      <button onClick={() => handleGenerateBracket(combination.weightCategory, combination.ageCategory, combination.gender, combination.kupCategory, combatZone)}>Generate</button>
-                      <button onClick={() => handleDeleteTournament(tournamentId)}>Delete</button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() => handleGenerateBracket(
-                        combination.weightCategory,
-                        combination.ageCategory,
-                        combination.gender,
-                        combination.kupCategory,
-                        combatZones[key]
-                      )}
-                      disabled={!combatZones[key]}
-                      style={{ backgroundColor: !combatZones[key] ? 'grey' : '', color: !combatZones[key] ? 'white' : '', cursor: !combatZones[key] ? 'not-allowed' : '' }}
-                    >
-                      Generate
-                    </button>
-                  )}
-                </td>
+                <td>{combatZone}</td>
               </tr>
             );
           })}
