@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import './App.css';
 import PlayersView from './PlayersView';
 import TournamentBracketView from './TournamentBracketView';
@@ -8,6 +9,9 @@ import GenerateTournament from './GenerateTournament';
 function App() {
   return (
     <Router>
+      <Helmet>
+        <title>Open Malley 2024</title>
+      </Helmet>
       <div className="App">
         <header className="App-header">
           <nav className="navigation">
