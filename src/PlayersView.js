@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import PlayersTable from './PlayersTable';
-import apiUrl from './config';
+import { apiUrl, authToken } from './config';
 
 const PlayersView = () => {
   const [participants, setParticipants] = useState([]);
   const [filteredCount, setFilteredCount] = useState(0);
 
   const fetchParticipants = () => {
-    fetch(`${apiUrl}/api/participants`)
+    fetch(`${apiUrl}/api/participants`, {
+      headers: {
+        'X-Auth-Token': authToken,
+      },
+    })
       .then(response => response.json())
       .then(data => setParticipants(data))
       .catch(error => console.error('Error fetching participants:', error));
@@ -20,6 +24,9 @@ const PlayersView = () => {
   const handleDelete = (id) => {
     fetch(`${apiUrl}/api/participants/${id}`, {
       method: 'DELETE',
+      headers: {
+        'X-Auth-Token': authToken,
+      },
     })
     .then(response => response.json())
     .then(() => {
@@ -35,6 +42,7 @@ const PlayersView = () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'X-Auth-Token': authToken,
       },
       body: JSON.stringify(updatedData),
     })

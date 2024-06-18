@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css'; // Ensure you import the CSS file
-import apiUrl from './config';
+import { apiUrl, authToken } from './config';
 
 const AddPlayer = () => {
   const [participants, setParticipants] = useState([]);
@@ -15,7 +15,11 @@ const AddPlayer = () => {
   const navigate = useNavigate();
 
   const fetchParticipants = () => {
-    fetch(`${apiUrl}/api/participants`)
+    fetch(`${apiUrl}/api/participants`, {
+      headers: {
+        'X-Auth-Token': authToken,
+      },
+    })
       .then(response => response.json())
       .then(data => {
         setParticipants(data);
@@ -36,6 +40,7 @@ const AddPlayer = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Auth-Token': authToken,
       },
       body: JSON.stringify({ name, ageCategory, weightCategory, gender, kupCategory, team }), // Added team field
     })

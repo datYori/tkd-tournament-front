@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseCSV } from './csvUtils';
-import apiUrl from './config';
+import { apiUrl, authToken } from './config';
 
 const BulkUploadForm = ({ onParticipantAdded }) => {
   const [file, setFile] = useState(null);
@@ -37,6 +37,7 @@ const BulkUploadForm = ({ onParticipantAdded }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Auth-Token': authToken,
         },
         body: JSON.stringify(participants),
       })

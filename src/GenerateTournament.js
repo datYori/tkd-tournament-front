@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
-import apiUrl from './config';
+import { apiUrl, authToken } from './config';
 
 const GenerateTournament = () => {
   const [participants, setParticipants] = useState([]);
@@ -16,14 +16,22 @@ const GenerateTournament = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
   const fetchParticipants = () => {
-    fetch(`${apiUrl}/api/participants`)
+    fetch(`${apiUrl}/api/participants`, {
+      headers: {
+        'X-Auth-Token': authToken,
+      },
+    })
       .then(response => response.json())
       .then(data => setParticipants(data))
       .catch(error => console.error('Error fetching participants:', error));
   };
 
   const fetchTournaments = () => {
-    fetch(`${apiUrl}/api/tournaments`)
+    fetch(`${apiUrl}/api/participants`, {
+      headers: {
+        'X-Auth-Token': authToken,
+      },
+    })
       .then(response => response.json())
       .then(data => setTournaments(data))
       .catch(error => console.error('Error fetching tournaments:', error));
@@ -41,7 +49,10 @@ const GenerateTournament = () => {
     }
     fetch(`${apiUrl}/api/tournaments`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': authToken,
+      },
       body: JSON.stringify({ weightCategory, ageCategory, gender, kupCategory, combatZone })
     })
     .then(response => {
@@ -59,6 +70,9 @@ const GenerateTournament = () => {
 
     fetch(`${apiUrl}/api/tournaments/${id}`, {
       method: 'DELETE',
+      headers: {
+        'X-Auth-Token': authToken,
+      },
     })
     .then(response => {
       if (!response.ok) throw new Error('Failed to delete tournament');

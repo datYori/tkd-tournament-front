@@ -35,6 +35,7 @@ const TournamentBracketView = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'X-Auth-Token': authToken,
         },
         body: JSON.stringify({ winner }),
       });
