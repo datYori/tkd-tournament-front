@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TournamentBracket from 'react-svg-tournament-bracket';
-import apiUrl from './config';
+import { apiUrl, authToken } from './config';
 
 const TournamentBracketView = () => {
   const { tournamentId } = useParams();

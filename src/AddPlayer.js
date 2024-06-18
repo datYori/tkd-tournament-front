@@ -15,12 +15,18 @@ const AddPlayer = () => {
   const navigate = useNavigate();
 
   const fetchParticipants = () => {
+    console.log(`Fetching participants from ${apiUrl}/api/participants with token ${authToken}`);
     fetch(`${apiUrl}/api/participants`, {
       headers: {
         'X-Auth-Token': authToken,
       },
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         setParticipants(data);
       })

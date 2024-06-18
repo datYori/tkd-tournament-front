@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import './App.css';
 import AddPlayer from './AddPlayer';
 import PlayersView from './PlayersView';
@@ -14,6 +15,9 @@ function App() {
 
   return (
     <Router>
+      <Helmet>
+        <title>Admin TKD Malley</title>
+      </Helmet>
       <div className="App">
         <header className="App-header">
           <nav className="navigation">
