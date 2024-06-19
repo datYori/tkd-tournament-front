@@ -27,7 +27,7 @@ const GenerateTournament = () => {
   };
 
   const fetchTournaments = () => {
-    fetch(`${apiUrl}/api/participants`, {
+    fetch(`${apiUrl}/api/tournaments`, {
       headers: {
         'X-Auth-Token': authToken,
       },
