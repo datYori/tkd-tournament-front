@@ -25,6 +25,7 @@ const PlayersView = () => {
     fetch(`${apiUrl}/api/participants/${id}`, {
       method: 'DELETE',
       headers: {
+        'Content-Type': 'application/json',
         'X-Auth-Token': authToken,
       },
     })
