@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import TournamentBracket from 'react-svg-tournament-bracket';
-import { apiUrl, authToken } from './config';
+import { Bracket, RoundProps } from '@pawix/react-brackets';
+import { apiUrl } from './config';
 
 const TournamentBracketView = () => {
   const { tournamentId } = useParams();
@@ -17,6 +17,7 @@ const TournamentBracketView = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        console.log(data); // Log the fetched tournament data
         setTournament(data);
       } catch (err) {
         setError(err.message);
@@ -28,51 +29,29 @@ const TournamentBracketView = () => {
     fetchTournament();
   }, [tournamentId]);
 
-  const handleSelectTeam = async (match, team) => {
-    try {
-      const winner = team === 'home' ? match.homeTeamName : match.awayTeamName;
-      const response = await fetch(`${apiUrl}/api/tournaments/${tournamentId}/matches/${match.matchNumber}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Auth-Token': authToken,
-        },
-        body: JSON.stringify({ winner }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update tournament');
-      }
-
-      const updatedTournament = await response.json();
-      setTournament(updatedTournament);
-    } catch (error) {
-      console.error('Error updating tournament:', error);
-      setError(error.message);
-    }
-  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  // Ensure rounds property exists
+  if (!tournament || !tournament.rounds) return <div>No rounds available</div>;
+
+  const rounds: RoundProps[] = tournament.rounds;
+
   return (
     <div>
-      {tournament ? (
-        <>
-          <h2>Tournament Details</h2>
-          <div>
-            <strong>Category: </strong>{tournament.weightCategory} / {tournament.ageCategory} / {tournament.gender} / {tournament.kupCategory}
-            <br />
-            <strong>Status: </strong>{tournament.status}
-            <br />
-            <strong>Start Date: </strong>{new Date(tournament.startDate).toLocaleDateString()}
-          </div>
-          <h3>Matches</h3>
-          <div className="bracket-container">
-            <TournamentBracket matches={tournament.matches} onSelectTeam={handleSelectTeam} />
-          </div>
-        </>
-      ) : <p>No tournament details available.</p>}
+      <h2>Tournament Details</h2>
+      <div>
+        <strong>Category: </strong>{tournament.weightCategory} / {tournament.ageCategory} / {tournament.gender} / {tournament.kupCategory}
+        <br />
+        <strong>Status: </strong>{tournament.status}
+        <br />
+        <strong>Start Date: </strong>{new Date(tournament.startDate).toLocaleDateString()}
+      </div>
+      <h3>Matches</h3>
+      <div className="bracket-container">
+        <Bracket rounds={rounds} />
+      </div>
     </div>
   );
 };
