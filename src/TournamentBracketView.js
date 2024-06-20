@@ -68,7 +68,9 @@ const TournamentBracketView = () => {
             <strong>Start Date: </strong>{new Date(tournament.startDate).toLocaleDateString()}
           </div>
           <h3>Matches</h3>
-          <TournamentBracket matches={tournament.matches} onSelectTeam={handleSelectTeam} />
+          <div className="bracket-container">
+            <TournamentBracket matches={tournament.matches} onSelectTeam={handleSelectTeam} />
+          </div>
         </>
       ) : <p>No tournament details available.</p>}
     </div>

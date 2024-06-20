@@ -266,3 +266,13 @@ button:disabled {
     padding: 4px;
   }
 }
+
+.bracket-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.tournament-bracket svg {
+  width: 100%;
+  height: auto;
+}
