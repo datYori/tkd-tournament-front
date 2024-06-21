@@ -44,9 +44,7 @@ const TournamentBracketView = () => {
       <div>
         <strong>Category: </strong>{tournament.weightCategory} / {tournament.ageCategory} / {tournament.gender} / {tournament.kupCategory}
         <br />
-        <strong>Status: </strong>{tournament.status}
         <br />
-        <strong>Start Date: </strong>{new Date(tournament.startDate).toLocaleDateString()}
       </div>
       <h3>Matches</h3>
       <div className="bracket-container">
